@@ -3,9 +3,9 @@ import enum
 
 
 # Unfinished:
-#   BattingPost, PitchingPost, Game, School, CollegePlaying, Awards, Hall of Fame, Fielding, Salary, All Star
+#   BattingPost, PitchingPost, FieldingPost, HomeGame, School, CollegePlaying, Awards, Hall of Fame, Salary
 # Finished
-#   User, People, Parks, Franchise, Teams, Appearances, Manager, Batting, Pitching
+#   User, People, Parks, Franchise, Teams, Appearances, Manager, Batting, Pitching, Fielding, All Star
 
 class Division(enum.Enum):
     W = 1  # west
@@ -22,7 +22,6 @@ class Hand(enum.Enum):
     L = 1  # left
     R = 2  # right
     B = 3  # ambidextrous
-
 
 class User(db.Model):
     id = db.Column(db.Integer, primary_key=True)
@@ -65,10 +64,6 @@ class Teams(db.Model):
     wins = db.Column(db.Integer())
     losses = db.Column(db.Integer())
 
-    """
-    I chose to use the YNChoice enum so we do not have null fields, trying to reduce those to
-    a minimum
-    """
     divWon = db.Column(db.Enum(YNChoice))
     worldCupWon = db.Column(db.Enum(YNChoice))
     leagueWon = db.Column(db.Enum(YNChoice))
@@ -170,13 +165,6 @@ class People(db.Model):
     height = db.Column(db.Float())
     batHand = db.Column(db.Enum(Hand), nullable=True)
     throwHand = db.Column(db.Enum(Hand), nullable=True)
-
-
-class Player(db.Model):
-    personId = db.Column(db.ForeignKey('people.personId'), primary_key=True)
-    yr = db.Column(db.ForeignKey('people.personId'), primary_key=True)
-
-
 class Manager(db.Model):
     personId = db.Column(db.ForeignKey('people.personId'), primary_key=True)
     yr = db.Column(db.Integer(), primary_key=True)
@@ -294,7 +282,6 @@ class Fielding(db.Model):
     opponentsCaughtStealing = db.Column(db.Integer())
     zoneRating = db.Column(db.Integer())
 
-
 class HomeGames(db.Model):
     id = db.Column(db.Integer(), primary_key=True, autoincrement=True)
     yr = db.Column(db.Integer(), primary_key=True)
@@ -305,6 +292,23 @@ class HomeGames(db.Model):
     totalGames = db.Column(db.Integer())
     totalOpenings = db.Column(db.Integer())
     totalAttendance = db.Column(db.Integer())
+class Schools(db.Model):
+    schoolId = db.Column(db.String(15), primary_key=True)
+    name = db.Column(db.String(255))
+    city = db.Column(db.String(55))
+    state = db.Column(db.String(55))
+    country = db.Column(db.String(55))
+class CollegePlaying(db.Model):
+    schoolId = db.Column(db.ForeignKey('schools.schoolId'), primary_key=True)
+    personId = db.Column(db.ForeignKey('people.personId'))
+    yr = db.Column(db.Integer(), primary_key=True)
+
+class Salaries(db.Model):
+    personId = db.Column(db.ForeignKey('people.personId'), primary_key=True)
+    yr = db.Column(db.Integer(), primary_key=True)
+    teamId = db.Column(db.String(3), primary_key=True)
+    leagueId = db.Column(db.String(2))
+    salary = db.Column(db.Float())
 
 
 class Awards(db.Model):
