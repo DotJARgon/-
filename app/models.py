@@ -78,7 +78,7 @@ class Teams(db.Model):
     divId = db.Column(db.Enum(Division), default=Division.NONE)
     leagueId = db.Column(db.String(32))
     franchiseId = db.Column(db.ForeignKey('franchise.franchiseId'))
-    yearId = db.Column(db.Integer())
+    yr = db.Column(db.Integer())
 
     parkId = db.Column(db.ForeignKey('parks.parkId'))
     attendance = db.Column(db.Integer()) # can be null just cause of lack of info :(
@@ -132,7 +132,7 @@ class Teams(db.Model):
 
 class Appearances(db.Model):
     playerId = db.Column(db.ForeignKey('people.playerId'), primary_key=True)
-    yearId = db.Column(db.Integer())
+    yr = db.Column(db.Integer())
     teamId = db.Column(db.ForeignKey('teams.teamId'))
     leagueId = db.Column(db.String(32))
     totalGames = db.Column(db.Integer())
@@ -158,7 +158,7 @@ class Appearances(db.Model):
 
 class Manager(db.Model):
     playerId = db.Column(db.ForeignKey('people.playerId'), primary_key=True)
-    yearId = db.Column(db.Integer())
+    yr = db.Column(db.Integer())
     teamId = db.Column(db.ForeignKey('teams.teamId'))
     leagueId = db.Column(db.String(32))
     managerialOrder = db.Column(db.Integer()) # inseason = managerial order (perhaps name it that?)
@@ -169,7 +169,7 @@ class Manager(db.Model):
     playerManager = db.Column(db.Enum(YNChoice), default=YNChoice.N) #is this necessary?
 class Batting(db.Model):
     playerId = db.Column(db.ForeignKey('people.playerId'), primary_key=True)
-    yearId = db.Column(db.Integer())
+    yr = db.Column(db.Integer())
     stint = db.Column(db.Integer())
     teamId = db.Column(db.ForeignKey('teams.teamId'))
     leagueId = db.Column(db.String(32))
@@ -200,7 +200,7 @@ class BattingPost(Batting):
 
 class Pitching(db.Model):
     playerId = db.Column(db.ForeignKey('people.playerId'), primary_key=True)
-    yearId = db.Column(db.Integer())
+    yr = db.Column(db.Integer())
     stint = db.Column(db.Integer())
     teamId = db.Column(db.ForeignKey('teams.teamId'))
     leagueId = db.Column(db.String(32))
@@ -234,4 +234,40 @@ class PitchingPost(Pitching):
     Same as pitching just need to decide later
     """
     pass
+
+class AllStarFull(db.Model):
+    playerId = db.Column(db.ForeignKey('people.playerId'), primary_key=True)
+    yr = db.Column(db.Integer(), primary_key=True)
+    teamId = db.Column(db.ForeignKey('teams.teamId'))
+    leagueId = db.Column(db.String(32))
+    playedGame = db.Column(db.Boolean())
+    gameNum = db.Column(db.Integer())
+    gameId = db.Column(db.String(32))
+    startingPos = db.Column(db.Integer())
+
+class Fielding(db.Model):
+    # playerID,yr,stint,teamID,lgID,POS,G,GS,InnOuts,PO,A,E,DP,PB,WP,SB,CS,ZR
+    playerId = db.Column(db.ForeignKey('people.playerId'), primary_key=True)
+    yr = db.Column(db.Integer(), primary_key=True)
+    teamId = db.Column(db.ForeignKey('teams.teamId'))
+    leagueId = db.Column(db.String(32))
+    stint = db.Column(db.Integer())
+    position = db.Column(db.Integer())
+    games = db.Column(db.Integer())
+    gamesStarted = db.Column(db.Integer())
+    innOuts = db.Column(db.Integer())
+    putouts = db.Column(db.Integer())
+    assists = db.Column(db.Integer())
+    errors = db.Column(db.Integer())
+    doublePlays = db.Column(db.Integer())
+    passedBalls = db.Column(db.Integer())
+    wildPitches = db.Column(db.Integer())
+    opponentStolenBases = db.Column(db.Integer())
+    opponentsCaughtStealing = db.Column(db.Integer())
+    zoneRating = db.Column(db.Integer())
+
+
+
+
+
 
