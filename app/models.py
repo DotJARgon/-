@@ -73,7 +73,7 @@ class Franchise(db.Model):
     active = db.Column(db.Enum(YNChoice), default=YNChoice.NA,)
     nationalAssocId = db.Column(db.String(32))
 
-class Team(db.Model):
+class Teams(db.Model):
     teamId = db.Column(db.String(32), primary_key=True)
     divId = db.Column(db.Enum(Division), default=Division.NONE)
     leagueId = db.Column(db.String(32))
@@ -84,10 +84,10 @@ class Team(db.Model):
     attendance = db.Column(db.Integer()) # can be null just cause of lack of info :(
 
     rank = db.Column(db.Integer())
-    gamesPlayed = db.Column(db.Integer(), default=0)
-    homeGamesPlayed = db.Column(db.Integer(), default=0)
-    wins = db.Column(db.Integer(), default=0)
-    losses = db.Column(db.Integer(), default=0)
+    gamesPlayed = db.Column(db.Integer())
+    homeGamesPlayed = db.Column(db.Integer())
+    wins = db.Column(db.Integer())
+    losses = db.Column(db.Integer())
 
     """
     I chose to use the YNChoice enum so we do not have null fields, trying to reduce those to
@@ -98,39 +98,140 @@ class Team(db.Model):
     leagueWon = db.Column(db.Enum(YNChoice), default=YNChoice.NA)
     worldSeriesWon = db.Column(db.Enum(YNChoice), default=YNChoice.NA)
 
-    runs = db.Column(db.Integer(), default=0)
-    atBats = db.Column(db.Integer(), default=0)
+    runs = db.Column(db.Integer())
+    atBats = db.Column(db.Integer())
 
-    batterHit = db.Column(db.Integer(), default=0)
-    batterHomeRuns = db.Column(db.Integer(), default=0)
-    batterWalks = db.Column(db.Integer(), default=0)
+    batterHit = db.Column(db.Integer())
+    batterHomeRuns = db.Column(db.Integer())
+    batterWalks = db.Column(db.Integer())
 
-    doubles = db.Column(db.Integer(), default=0)
-    triples = db.Column(db.Integer(), default=0)
-    strikeouts = db.Column(db.Integer(), default=0)
-    stolenBases = db.Column(db.Integer(), default=0)
-    caughtStealing = db.Column(db.Integer(), default=0)
-    batterHitPitch = db.Column(db.Integer(), default=0)
-    sacrificeFlies = db.Column(db.Integer(), default=0)
-    opponentRunsScored = db.Column(db.Integer(), default=0)
-    earnedRunsAllowed = db.Column(db.Integer(), default=0)
-    earnedRunAverage = db.Column(db.Float(), default=0.0) #idk if this should be here tbh
-    completeGames = db.Column(db.Integer(), default=0)
-    shutouts = db.Column(db.Integer(), default=0)
-    saves = db.Column(db.Integer(), default=0)
-    ipOuts = db.Column(db.Integer(), default=0)
-    hitsAllowed = db.Column(db.Integer(), default=0)
-    homerunsAllowed = db.Column(db.Integer(), default=0)
-    walksAllowed = db.Column(db.Integer(), default=0)
-    pitcherStrikeouts = db.Column(db.Integer(), default=0)
-    errors = db.Column(db.Integer(), default=0)
-    doublePlays = db.Column(db.Integer(), default=0)
-    fieldPercentage = db.Column(db.Float(), default=0.0)
+    doubles = db.Column(db.Integer())
+    triples = db.Column(db.Integer())
+    batterStrikeouts = db.Column(db.Integer())
+    stolenBases = db.Column(db.Integer())
+    caughtStealing = db.Column(db.Integer())
+    batterHitPitch = db.Column(db.Integer())
+    sacrificeFlies = db.Column(db.Integer())
+    opponentRunsScored = db.Column(db.Integer())
+    earnedRunsAllowed = db.Column(db.Integer())
+    earnedRunAverage = db.Column(db.Float()) #idk if this should be here tbh
+    completeGames = db.Column(db.Integer())
+    shutouts = db.Column(db.Integer())
+    saves = db.Column(db.Integer())
+    ipOuts = db.Column(db.Integer())
+    hitsAllowed = db.Column(db.Integer())
+    homerunsAllowed = db.Column(db.Integer())
+    walksAllowed = db.Column(db.Integer())
+    pitcherStrikeouts = db.Column(db.Integer())
+    errors = db.Column(db.Integer())
+    doublePlays = db.Column(db.Integer())
+    fieldPercentage = db.Column(db.Float())
 
-    batterParkFactor = db.Column(db.Integer(), default=0)
-    pitcherParkFactor = db.Column(db.Integer(), default=0)
+    batterParkFactor = db.Column(db.Integer())
+    pitcherParkFactor = db.Column(db.Integer())
 
+class Appearances(db.Model):
+    playerId = db.Column(db.ForeignKey('people.playerId'), primary_key=True)
+    yearId = db.Column(db.Integer())
+    teamId = db.Column(db.ForeignKey('teams.teamId'))
+    leagueId = db.Column(db.String(32))
+    totalGames = db.Column(db.Integer())
+    totalGamesStarted = db.Column(db.Integer())
+    gamesBatted = db.Column(db.Integer())
+    gamesDefended = db.Column(db.Integer())
+    gamesPitcher = db.Column(db.Integer())
+    gamesCatcher = db.Column(db.Integer())
 
+    gamesBaseman1 = db.Column(db.Integer())
+    gamesBaseman2 = db.Column(db.Integer())
+    gamesBaseman3 = db.Column(db.Integer())
 
+    gamesShortStop = db.Column(db.Integer())
+    gamesLeftFielder = db.Column(db.Integer())
+    gamesCenterFielder = db.Column(db.Integer())
+    gamesRightFielder = db.Column(db.Integer())
+    gamesOutFielder = db.Column(db.Integer())
 
+    gamesDesignatedHitter = db.Column(db.Integer())
+    gamesPinchHitter = db.Column(db.Integer())
+    gamesPinchRunner = db.Column(db.Integer())
+
+class Manager(db.Model):
+    playerId = db.Column(db.ForeignKey('people.playerId'), primary_key=True)
+    yearId = db.Column(db.Integer())
+    teamId = db.Column(db.ForeignKey('teams.teamId'))
+    leagueId = db.Column(db.String(32))
+    managerialOrder = db.Column(db.Integer()) # inseason = managerial order (perhaps name it that?)
+    gamesManaged = db.Column(db.Integer())
+    wins = db.Column(db.Integer())
+    losses = db.Column(db.Integer())
+    rank = db.Column(db.Integer())
+    playerManager = db.Column(db.Enum(YNChoice), default=YNChoice.N) #is this necessary?
+class Batting(db.Model):
+    playerId = db.Column(db.ForeignKey('people.playerId'), primary_key=True)
+    yearId = db.Column(db.Integer())
+    stint = db.Column(db.Integer())
+    teamId = db.Column(db.ForeignKey('teams.teamId'))
+    leagueId = db.Column(db.String(32))
+    games = db.Column(db.Integer())
+    atBats = db.Column(db.Integer())
+    runs = db.Column(db.Integer())
+    hits = db.Column(db.Integer())
+    doubles = db.Column(db.Integer())
+    triples = db.Column(db.Integer())
+    homeruns = db.Column(db.Integer())
+    runsBattedIn = db.Column(db.Integer())
+    stolenBases = db.Column(db.Integer())
+    caughtStealing = db.Column(db.Integer())
+    baseOnBalls = db.Column(db.Integer())
+    strikeouts = db.Column(db.Integer())
+    intentionalWalks = db.Column(db.Integer())
+    hitByPitch = db.Column(db.Integer())
+    sacrificeHits = db.Column(db.Integer())
+    sacrificeFlieds = db.Column(db.Integer())
+    groundedIntoDoublePlays = db.Column(db.Integer())
+
+class BattingPost(Batting):
+    """"
+    identical to batting, fill it later when we decide on final
+    paras
+    """
+    pass
+
+class Pitching(db.Model):
+    playerId = db.Column(db.ForeignKey('people.playerId'), primary_key=True)
+    yearId = db.Column(db.Integer())
+    stint = db.Column(db.Integer())
+    teamId = db.Column(db.ForeignKey('teams.teamId'))
+    leagueId = db.Column(db.String(32))
+    wins = db.Column(db.Integer())
+    losses = db.Column(db.Integer())
+    games = db.Column(db.Integer())
+    gamesStarted = db.Column(db.Integer())
+    completeGames = db.Column(db.Integer())
+    shutouts = db.Column(db.Integer())
+    saves = db.Column(db.Integer())
+    outsPitched = db.Column(db.Integer())
+    hits = db.Column(db.Integer())
+    earnedRuns = db.Column(db.Integer())
+    homeruns = db.Column(db.Integer())
+    walks = db.Column(db.Integer())
+    strikeouts = db.Column(db.Integer())
+    oppBattingAvg = db.Column(db.Float())
+    earnedRunAverage = db.Column(db.Float())
+    intentionalWalks = db.Column(db.Integer())
+    wildPitches = db.Column(db.Integer())
+    battersHitByPitch = db.Column(db.Integer())
+    balks = db.Column(db.Integer())
+    gamesFinished = db.Column(db.Integer())
+    runsAllowed = db.Column(db.Integer())
+    opponentSacrifices = db.Column(db.Integer())
+    opponentSacrificeFlies = db.Column(db.Integer())
+    groundIntoDouble = db.Column(db.Integer())
+
+class PitchingPost(Pitching):
+    """
+    Same as pitching just need to decide later
+    """
+    pass
 
