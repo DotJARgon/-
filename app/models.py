@@ -241,3 +241,39 @@ class PitchingPost(Pitching):
     """
     pass
 
+class AllStarFull(db.Model):
+    playerId = db.Column(db.ForeignKey('people.playerId'), primary_key=True)
+    yr = db.Column(db.Integer(), primary_key=True)
+    teamId = db.Column(db.ForeignKey('teams.teamId'))
+    leagueId = db.Column(db.String(32))
+    playedGame = db.Column(db.Boolean())
+    gameNum = db.Column(db.Integer())
+    gameId = db.Column(db.String(32))
+    startingPos = db.Column(db.Integer())
+
+class Fielding(db.Model):
+    # playerID,yr,stint,teamID,lgID,POS,G,GS,InnOuts,PO,A,E,DP,PB,WP,SB,CS,ZR
+    playerId = db.Column(db.ForeignKey('people.playerId'), primary_key=True)
+    yr = db.Column(db.Integer(), primary_key=True)
+    teamId = db.Column(db.ForeignKey('teams.teamId'))
+    leagueId = db.Column(db.String(32))
+    stint = db.Column(db.Integer())
+    position = db.Column(db.Integer())
+    games = db.Column(db.Integer())
+    gamesStarted = db.Column(db.Integer())
+    innOuts = db.Column(db.Integer())
+    putouts = db.Column(db.Integer())
+    assists = db.Column(db.Integer())
+    errors = db.Column(db.Integer())
+    doublePlays = db.Column(db.Integer())
+    passedBalls = db.Column(db.Integer())
+    wildPitches = db.Column(db.Integer())
+    opponentStolenBases = db.Column(db.Integer())
+    opponentsCaughtStealing = db.Column(db.Integer())
+    zoneRating = db.Column(db.Integer())
+
+
+
+
+
+
