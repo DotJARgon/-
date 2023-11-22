@@ -11,6 +11,7 @@ README CONTENTS
 
 1.0 Release Contents
 1.1 Introduction
+1.1 Introduction
 1.2 What's New
 1.3 Acknowledgements
 1.4 Using this Database

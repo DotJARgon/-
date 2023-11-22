@@ -98,7 +98,7 @@ class Teams(db.Model):
     pitcherParkFactor = db.Column(db.Integer())
 
 class Appearances(db.Model):
-    playerId = db.Column(db.ForeignKey('people.playerId'), primary_key=True)
+    personId = db.Column(db.ForeignKey('people.personId'), primary_key=True)
     yr = db.Column(db.Integer())
     teamId = db.Column(db.ForeignKey('teams.teamId'))
     leagueId = db.Column(db.String(32))
@@ -125,7 +125,7 @@ class Appearances(db.Model):
 
 
 class People(db.Model):
-    playerId = db.Column(db.String(100), primary_key=True)
+    personId = db.Column(db.String(100), primary_key=True)
 
     birthYear = db.Column(db.Integer())
     birthMonth = db.Column(db.Integer())
@@ -161,10 +161,10 @@ class People(db.Model):
     batHand = db.Column(db.Enum(Hand), nullable=True)
     throwHand = db.Column(db.Enum(Hand), nullable=True)
 class Player(db.Model):
-    playerId = db.Column(db.ForeignKey('people.playerId'), primary_key=True)
-    yr = db.Column(db.ForeignKey('people.playerId'), primary_key=True)
+    personId = db.Column(db.ForeignKey('people.personId'), primary_key=True)
+    yr = db.Column(db.ForeignKey('people.personId'), primary_key=True)
 class Manager(db.Model):
-    playerId = db.Column(db.ForeignKey('people.playerId'), primary_key=True)
+    personId = db.Column(db.ForeignKey('people.personId'), primary_key=True)
     yr = db.Column(db.Integer(), primary_key=True)
     teamId = db.Column(db.ForeignKey('teams.teamId'))
     leagueId = db.Column(db.String(32))
@@ -176,7 +176,7 @@ class Manager(db.Model):
     playerManager = db.Column(db.Enum(YNChoice), default=YNChoice.N) #is this necessary?
 
 class Batting(db.Model):
-    playerId = db.Column(db.ForeignKey('people.playerId'), primary_key=True)
+    personId = db.Column(db.ForeignKey('people.personId'), primary_key=True)
     yr = db.Column(db.Integer())
     stint = db.Column(db.Integer())
     teamId = db.Column(db.ForeignKey('teams.teamId'))
@@ -206,7 +206,7 @@ class BattingPost(Batting):
     pass
 
 class Pitching(db.Model):
-    playerId = db.Column(db.ForeignKey('people.playerId'), primary_key=True)
+    personId = db.Column(db.ForeignKey('people.personId'), primary_key=True)
     yr = db.Column(db.Integer())
     stint = db.Column(db.Integer())
     teamId = db.Column(db.ForeignKey('teams.teamId'))
@@ -242,7 +242,7 @@ class PitchingPost(Pitching):
     pass
 
 class AllStarFull(db.Model):
-    playerId = db.Column(db.ForeignKey('people.playerId'), primary_key=True)
+    personId = db.Column(db.ForeignKey('people.personId'), primary_key=True)
     yr = db.Column(db.Integer(), primary_key=True)
     teamId = db.Column(db.ForeignKey('teams.teamId'))
     leagueId = db.Column(db.String(32))
@@ -252,8 +252,8 @@ class AllStarFull(db.Model):
     startingPos = db.Column(db.Integer())
 
 class Fielding(db.Model):
-    # playerID,yr,stint,teamID,lgID,POS,G,GS,InnOuts,PO,A,E,DP,PB,WP,SB,CS,ZR
-    playerId = db.Column(db.ForeignKey('people.playerId'), primary_key=True)
+    # personId,yr,stint,teamID,lgID,POS,G,GS,InnOuts,PO,A,E,DP,PB,WP,SB,CS,ZR
+    personId = db.Column(db.ForeignKey('people.personId'), primary_key=True)
     yr = db.Column(db.Integer(), primary_key=True)
     teamId = db.Column(db.ForeignKey('teams.teamId'))
     leagueId = db.Column(db.String(32))
@@ -272,7 +272,35 @@ class Fielding(db.Model):
     opponentsCaughtStealing = db.Column(db.Integer())
     zoneRating = db.Column(db.Integer())
 
-
+class HomeGames(db.Model):
+    id = db.Column(db.Integer(), primary_key=True, autoincrement=True)
+    yr = db.Column(db.Integer(), primary_key=True)
+    teamId = db.Column(db.ForeignKey('teams.teamId'))
+    leagueId = db.Column(db.String(32))
+    firstGame = db.Column(db.Date())
+    lastGame = db.Column(db.Date())
+    totalGames = db.Column(db.Integer())
+    totalOpenings = db.Column(db.Integer())
+    totalAttendance = db.Column(db.Integer())
+class Awards(db.Model):
+    id = db.Column(db.Integer(), primary_key=True, autoincrement=True)
+    awardName = db.Column(db.String(255))
+    personId = db.Column(db.ForeignKey('people.personId'), primary_key=True)
+    yr = db.Column(db.Integer(), primary_key=True)
+    teamId = db.Column(db.ForeignKey('teams.teamId'))
+    leagueId = db.Column(db.String(32))
+    tie = db.Column(db.Boolean())
+    notes = db.Column(db.String(255))
+class HallOfFame(db.Model):
+    personId = db.Column(db.ForeignKey('people.personId'), primary_key=True)
+    yr = db.Column(db.Integer(), primary_key=True)
+    votedBy = db.Column(db.String(255))
+    totalBallots = db.Column(db.Integer())
+    totalNeededBallots = db.Column(db.Integer())
+    totalVotes = db.Column(db.Integer())
+    inducted = db.Column(db.Boolean())
+    category = db.Column(db.String(32))
+    note = db.Column(db.String(100))
 
 
 
