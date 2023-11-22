@@ -5,11 +5,7 @@
       <excludeFolder url="file://$MODULE_DIR$/project_env" />
       <excludeFolder url="file://$MODULE_DIR$/venv" />
     </content>
-<<<<<<< HEAD
-    <orderEntry type="inheritedJdk" />
-=======
     <orderEntry type="jdk" jdkName="Python 3.10 (!!!)" jdkType="Python SDK" />
->>>>>>> fa4be7cfa74b2bae58426b10e7b75c774d066d3c
     <orderEntry type="sourceFolder" forTests="false" />
   </component>
   <component name="PyDocumentationSettings">
