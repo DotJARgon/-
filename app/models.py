@@ -44,11 +44,11 @@ class User(UserMixin, db.Model):
 
 class Parks(db.Model):
     parkId = db.Column(db.String(32), primary_key=True)
-    parkName = db.Column(db.String(100))
-    parkAlias = db.Column(db.String(100))
-    parkCountry = db.Column(db.String(100))
-    parkState = db.Column(db.String(100))
-    parkCity = db.Column(db.String(100))
+    parkName = db.Column(db.String(255))
+    parkAlias = db.Column(db.String(255))
+    parkCountry = db.Column(db.String(255))
+    parkState = db.Column(db.String(255))
+    parkCity = db.Column(db.String(255))
 
 
 class Franchise(db.Model):
