@@ -2,9 +2,9 @@ from app import db
 import enum
 
 # Unfinished:
-#   BattingPost, PitchingPost, Game, School, CollegePlaying, Awards, Hall of Fame, Fielding, Salary, All Star
+#   BattingPost, PitchingPost, FieldingPost, HomeGame, School, CollegePlaying, Awards, Hall of Fame, Salary
 # Finished
-#   User, People, Parks, Franchise, Teams, Appearances, Manager, Batting, Pitching
+#   User, People, Parks, Franchise, Teams, Appearances, Manager, Batting, Pitching, Fielding, All Star
 
 class Division(enum.Enum):
     W = 1  # west
@@ -14,9 +14,9 @@ class YNChoice(enum.Enum):
     Y = 1  # yes
     N = 2  # no
 class Hand(enum.Enum):
-    L = 1 # left
-    R = 2 # right
-    B = 3 # ambidextrous
+    L = 1  # left
+    R = 2  # right
+    B = 3  # ambidextrous
 
 class User(db.Model):
     id = db.Column(db.Integer, primary_key=True)
@@ -42,7 +42,7 @@ class Franchise(db.Model):
     nationalAssocId = db.Column(db.String(32))
 class Teams(db.Model):
     teamId = db.Column(db.String(32), primary_key=True)
-    divId = db.Column(db.Enum(Division), default=Division.NONE)
+    divId = db.Column(db.Enum(Division))
     leagueId = db.Column(db.String(32))
     franchiseId = db.Column(db.ForeignKey('franchise.franchiseId'))
     yr = db.Column(db.Integer())
@@ -56,10 +56,6 @@ class Teams(db.Model):
     wins = db.Column(db.Integer())
     losses = db.Column(db.Integer())
 
-    """
-    I chose to use the YNChoice enum so we do not have null fields, trying to reduce those to
-    a minimum
-    """
     divWon = db.Column(db.Enum(YNChoice))
     worldCupWon = db.Column(db.Enum(YNChoice))
     leagueWon = db.Column(db.Enum(YNChoice))
@@ -98,7 +94,7 @@ class Teams(db.Model):
     pitcherParkFactor = db.Column(db.Integer())
 
 class Appearances(db.Model):
-    playerId = db.Column(db.ForeignKey('people.playerId'), primary_key=True)
+    personId = db.Column(db.ForeignKey('people.personId'), primary_key=True)
     yr = db.Column(db.Integer())
     teamId = db.Column(db.ForeignKey('teams.teamId'))
     leagueId = db.Column(db.String(32))
@@ -125,7 +121,7 @@ class Appearances(db.Model):
 
 
 class People(db.Model):
-    playerId = db.Column(db.String(100), primary_key=True)
+    personId = db.Column(db.String(100), primary_key=True)
 
     birthYear = db.Column(db.Integer())
     birthMonth = db.Column(db.Integer())
@@ -160,11 +156,8 @@ class People(db.Model):
     height = db.Column(db.Float())
     batHand = db.Column(db.Enum(Hand), nullable=True)
     throwHand = db.Column(db.Enum(Hand), nullable=True)
-class Player(db.Model):
-    playerId = db.Column(db.ForeignKey('people.playerId'), primary_key=True)
-    yr = db.Column(db.ForeignKey('people.playerId'), primary_key=True)
 class Manager(db.Model):
-    playerId = db.Column(db.ForeignKey('people.playerId'), primary_key=True)
+    personId = db.Column(db.ForeignKey('people.personId'), primary_key=True)
     yr = db.Column(db.Integer(), primary_key=True)
     teamId = db.Column(db.ForeignKey('teams.teamId'))
     leagueId = db.Column(db.String(32))
@@ -176,7 +169,7 @@ class Manager(db.Model):
     playerManager = db.Column(db.Enum(YNChoice), default=YNChoice.N) #is this necessary?
 
 class Batting(db.Model):
-    playerId = db.Column(db.ForeignKey('people.playerId'), primary_key=True)
+    personId = db.Column(db.ForeignKey('people.personId'), primary_key=True)
     yr = db.Column(db.Integer())
     stint = db.Column(db.Integer())
     teamId = db.Column(db.ForeignKey('teams.teamId'))
@@ -206,7 +199,7 @@ class BattingPost(Batting):
     pass
 
 class Pitching(db.Model):
-    playerId = db.Column(db.ForeignKey('people.playerId'), primary_key=True)
+    personId = db.Column(db.ForeignKey('people.personId'), primary_key=True)
     yr = db.Column(db.Integer())
     stint = db.Column(db.Integer())
     teamId = db.Column(db.ForeignKey('teams.teamId'))
@@ -242,7 +235,7 @@ class PitchingPost(Pitching):
     pass
 
 class AllStarFull(db.Model):
-    playerId = db.Column(db.ForeignKey('people.playerId'), primary_key=True)
+    personId = db.Column(db.ForeignKey('people.personId'), primary_key=True)
     yr = db.Column(db.Integer(), primary_key=True)
     teamId = db.Column(db.ForeignKey('teams.teamId'))
     leagueId = db.Column(db.String(32))
@@ -252,8 +245,8 @@ class AllStarFull(db.Model):
     startingPos = db.Column(db.Integer())
 
 class Fielding(db.Model):
-    # playerID,yr,stint,teamID,lgID,POS,G,GS,InnOuts,PO,A,E,DP,PB,WP,SB,CS,ZR
-    playerId = db.Column(db.ForeignKey('people.playerId'), primary_key=True)
+    # personId,yr,stint,teamID,lgID,POS,G,GS,InnOuts,PO,A,E,DP,PB,WP,SB,CS,ZR
+    personId = db.Column(db.ForeignKey('people.personId'), primary_key=True)
     yr = db.Column(db.Integer(), primary_key=True)
     teamId = db.Column(db.ForeignKey('teams.teamId'))
     leagueId = db.Column(db.String(32))
@@ -272,7 +265,23 @@ class Fielding(db.Model):
     opponentsCaughtStealing = db.Column(db.Integer())
     zoneRating = db.Column(db.Integer())
 
+class Schools(db.Model):
+    schoolId = db.Column(db.String(15), primary_key=True)
+    name = db.Column(db.String(255))
+    city = db.Column(db.String(55))
+    state = db.Column(db.String(55))
+    country = db.Column(db.String(55))
+class CollegePlaying(db.Model):
+    schoolId = db.Column(db.ForeignKey('schools.schoolId'), primary_key=True)
+    personId = db.Column(db.ForeignKey('people.personId'))
+    yr = db.Column(db.Integer(), primary_key=True)
 
+class Salaries(db.Model):
+    personId = db.Column(db.ForeignKey('people.personId'), primary_key=True)
+    yr = db.Column(db.Integer(), primary_key=True)
+    teamId = db.Column(db.String(3), primary_key=True)
+    leagueId = db.Column(db.String(2))
+    salary = db.Column(db.Float())
 
 
 
