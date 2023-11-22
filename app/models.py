@@ -1,19 +1,23 @@
 from app import db
 import enum
+
+# Unfinished:
+#   BattingPost, PitchingPost, Game, School, CollegePlaying, Awards, Hall of Fame, Fielding, Salary, All Star
+# Finished
+#   User, People, Parks, Franchise, Teams, Appearances, Manager, Batting, Pitching
+
 class Division(enum.Enum):
-    W = 1 # west
-    E = 2 # east
-    C = 3 # central
-    NONE = 4 # no division
+    W = 1  # west
+    E = 2  # east
+    C = 3  # central
 class YNChoice(enum.Enum):
-    Y = 1
-    N = 2
-    NA = 3
+    Y = 1  # yes
+    N = 2  # no
 class Hand(enum.Enum):
-    L = 1
-    R = 2
-    B = 3
-    N = 4
+    L = 1 # left
+    R = 2 # right
+    B = 3 # ambidextrous
+
 class User(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     username = db.Column(db.String(64), index=True, unique=True)
@@ -22,42 +26,6 @@ class User(db.Model):
     def __repr__(self):
         return self.username
 
-class People(db.Model):
-    playerId = db.Column(db.String(100), primary_key=True)
-    
-    birthYear = db.Column(db.Integer())
-    birthMonth = db.Column(db.Integer())
-    birthDay = db.Column(db.Integer())
-    birthCountry = db.Column(db.String(100))
-    birthState = db.Column(db.String(100))
-    birthCity = db.Column(db.String(100))
-
-    deathYear = db.Column(db.Integer())
-    deathMonth = db.Column(db.Integer())
-    deathDay = db.Column(db.Integer())
-    deathCountry = db.Column(db.String(100))
-    deathState = db.Column(db.String(100))
-    deathCity = db.Column(db.String(100))
-
-    debutYear = db.Column(db.Integer())
-    debutMonth = db.Column(db.Integer())
-    debutDay = db.Column(db.Integer())
-    debutCountry = db.Column(db.String(100))
-    debutState = db.Column(db.String(100))
-    debutCity = db.Column(db.String(100))
-
-    finalGameYear = db.Column(db.Integer())
-    finalGameMonth = db.Column(db.Integer())
-    finalGameDay = db.Column(db.Integer())
-    finalGameCountry = db.Column(db.String(100))
-    finalGameState = db.Column(db.String(100))
-    finalGameCity = db.Column(db.String(100))
-
-    name = db.Column(db.String(255))
-    weight = db.Column(db.Float())
-    height = db.Column(db.Float())
-    batHand = db.Column(db.Enum(Hand), default=Hand.N)
-    throwHand = db.Column(db.Enum(Hand), default=Hand.N)
 
 class Parks(db.Model):
     parkId = db.Column(db.String(32), primary_key=True)
@@ -70,18 +38,17 @@ class Parks(db.Model):
 class Franchise(db.Model):
     franchiseId = db.Column(db.String(32), primary_key=True)
     franchiseName = db.Column(db.String(100))
-    active = db.Column(db.Enum(YNChoice), default=YNChoice.NA,)
+    active = db.Column(db.Enum(YNChoice),)
     nationalAssocId = db.Column(db.String(32))
-
 class Teams(db.Model):
     teamId = db.Column(db.String(32), primary_key=True)
     divId = db.Column(db.Enum(Division), default=Division.NONE)
     leagueId = db.Column(db.String(32))
     franchiseId = db.Column(db.ForeignKey('franchise.franchiseId'))
-    yearId = db.Column(db.Integer())
+    yr = db.Column(db.Integer())
 
     parkId = db.Column(db.ForeignKey('parks.parkId'))
-    attendance = db.Column(db.Integer()) # can be null just cause of lack of info :(
+    attendance = db.Column(db.Integer())
 
     rank = db.Column(db.Integer())
     gamesPlayed = db.Column(db.Integer())
@@ -93,10 +60,10 @@ class Teams(db.Model):
     I chose to use the YNChoice enum so we do not have null fields, trying to reduce those to
     a minimum
     """
-    divWon = db.Column(db.Enum(YNChoice), default=YNChoice.NA)
-    worldCupWon = db.Column(db.Enum(YNChoice), default=YNChoice.NA)
-    leagueWon = db.Column(db.Enum(YNChoice), default=YNChoice.NA)
-    worldSeriesWon = db.Column(db.Enum(YNChoice), default=YNChoice.NA)
+    divWon = db.Column(db.Enum(YNChoice))
+    worldCupWon = db.Column(db.Enum(YNChoice))
+    leagueWon = db.Column(db.Enum(YNChoice))
+    worldSeriesWon = db.Column(db.Enum(YNChoice))
 
     runs = db.Column(db.Integer())
     atBats = db.Column(db.Integer())
@@ -132,7 +99,7 @@ class Teams(db.Model):
 
 class Appearances(db.Model):
     playerId = db.Column(db.ForeignKey('people.playerId'), primary_key=True)
-    yearId = db.Column(db.Integer())
+    yr = db.Column(db.Integer())
     teamId = db.Column(db.ForeignKey('teams.teamId'))
     leagueId = db.Column(db.String(32))
     totalGames = db.Column(db.Integer())
@@ -156,9 +123,49 @@ class Appearances(db.Model):
     gamesPinchHitter = db.Column(db.Integer())
     gamesPinchRunner = db.Column(db.Integer())
 
+
+class People(db.Model):
+    playerId = db.Column(db.String(100), primary_key=True)
+
+    birthYear = db.Column(db.Integer())
+    birthMonth = db.Column(db.Integer())
+    birthDay = db.Column(db.Integer())
+    birthCountry = db.Column(db.String(100))
+    birthState = db.Column(db.String(100))
+    birthCity = db.Column(db.String(100))
+
+    deathYear = db.Column(db.Integer())
+    deathMonth = db.Column(db.Integer())
+    deathDay = db.Column(db.Integer())
+    deathCountry = db.Column(db.String(100))
+    deathState = db.Column(db.String(100))
+    deathCity = db.Column(db.String(100))
+
+    debutYear = db.Column(db.Integer())
+    debutMonth = db.Column(db.Integer())
+    debutDay = db.Column(db.Integer())
+    debutCountry = db.Column(db.String(100))
+    debutState = db.Column(db.String(100))
+    debutCity = db.Column(db.String(100))
+
+    finalGameYear = db.Column(db.Integer())
+    finalGameMonth = db.Column(db.Integer())
+    finalGameDay = db.Column(db.Integer())
+    finalGameCountry = db.Column(db.String(100))
+    finalGameState = db.Column(db.String(100))
+    finalGameCity = db.Column(db.String(100))
+
+    name = db.Column(db.String(255))
+    weight = db.Column(db.Float())
+    height = db.Column(db.Float())
+    batHand = db.Column(db.Enum(Hand), nullable=True)
+    throwHand = db.Column(db.Enum(Hand), nullable=True)
+class Player(db.Model):
+    playerId = db.Column(db.ForeignKey('people.playerId'), primary_key=True)
+    yr = db.Column(db.ForeignKey('people.playerId'), primary_key=True)
 class Manager(db.Model):
     playerId = db.Column(db.ForeignKey('people.playerId'), primary_key=True)
-    yearId = db.Column(db.Integer())
+    yr = db.Column(db.Integer(), primary_key=True)
     teamId = db.Column(db.ForeignKey('teams.teamId'))
     leagueId = db.Column(db.String(32))
     managerialOrder = db.Column(db.Integer()) # inseason = managerial order (perhaps name it that?)
@@ -167,9 +174,10 @@ class Manager(db.Model):
     losses = db.Column(db.Integer())
     rank = db.Column(db.Integer())
     playerManager = db.Column(db.Enum(YNChoice), default=YNChoice.N) #is this necessary?
+
 class Batting(db.Model):
     playerId = db.Column(db.ForeignKey('people.playerId'), primary_key=True)
-    yearId = db.Column(db.Integer())
+    yr = db.Column(db.Integer())
     stint = db.Column(db.Integer())
     teamId = db.Column(db.ForeignKey('teams.teamId'))
     leagueId = db.Column(db.String(32))
@@ -190,7 +198,6 @@ class Batting(db.Model):
     sacrificeHits = db.Column(db.Integer())
     sacrificeFlieds = db.Column(db.Integer())
     groundedIntoDoublePlays = db.Column(db.Integer())
-
 class BattingPost(Batting):
     """"
     identical to batting, fill it later when we decide on final
@@ -200,7 +207,7 @@ class BattingPost(Batting):
 
 class Pitching(db.Model):
     playerId = db.Column(db.ForeignKey('people.playerId'), primary_key=True)
-    yearId = db.Column(db.Integer())
+    yr = db.Column(db.Integer())
     stint = db.Column(db.Integer())
     teamId = db.Column(db.ForeignKey('teams.teamId'))
     leagueId = db.Column(db.String(32))
@@ -228,7 +235,6 @@ class Pitching(db.Model):
     opponentSacrifices = db.Column(db.Integer())
     opponentSacrificeFlies = db.Column(db.Integer())
     groundIntoDouble = db.Column(db.Integer())
-
 class PitchingPost(Pitching):
     """
     Same as pitching just need to decide later
