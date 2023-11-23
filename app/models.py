@@ -18,6 +18,17 @@ class Division(enum.Enum):
 class YNChoice(enum.Enum):
     Y = 1  # yes
     N = 2  # no
+    X = 3  # not applicable
+
+    @staticmethod
+    def parse(c):
+        if c == 'Y':
+            return YNChoice.Y
+        elif c == 'N':
+            return YNChoice.N
+        elif c == 'NA':
+            return YNChoice.X
+        return None
 
 
 class Hand(enum.Enum):
@@ -44,14 +55,14 @@ class User(UserMixin, db.Model):
 
 class Parks(db.Model):
     parkId = db.Column(db.String(32), primary_key=True)
-    parkName = db.Column(db.String(255))
+    parkName = db.Column(db.String(255), index=True)
     parkAlias = db.Column(db.String(255))
     parkCountry = db.Column(db.String(255))
     parkState = db.Column(db.String(255))
     parkCity = db.Column(db.String(255))
 
 
-class Franchise(db.Model):
+class Franchises(db.Model):
     franchiseId = db.Column(db.String(32), primary_key=True)
     franchiseName = db.Column(db.String(100))
     active = db.Column(db.Enum(YNChoice), )
@@ -60,12 +71,13 @@ class Franchise(db.Model):
 
 class Teams(db.Model):
     teamId = db.Column(db.String(32), primary_key=True)
+    teamNick = db.Column(db.String(32), index=True)
     divId = db.Column(db.Enum(Division))
     leagueId = db.Column(db.String(32))
-    franchiseId = db.Column(db.ForeignKey('franchise.franchiseId'))
+    franchiseId = db.Column(db.ForeignKey('franchises.franchiseId'))
     yr = db.Column(db.Integer())
 
-    parkId = db.Column(db.ForeignKey('parks.parkId'))
+    parkName = db.Column(db.ForeignKey('parks.parkName'))
     attendance = db.Column(db.Integer())
 
     rank = db.Column(db.Integer())
