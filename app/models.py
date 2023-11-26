@@ -35,6 +35,15 @@ class Hand(enum.Enum):
     L = 1  # left
     R = 2  # right
     B = 3  # ambidextrous
+    @staticmethod
+    def parse(h):
+        if h == 'L':
+            return Hand.L
+        elif h == 'R':
+            return Hand.R
+        elif h == 'B':
+            return Hand.B
+        return None
 @login.user_loader
 def load_user(id):
     return User.query.get(int(id))
@@ -70,7 +79,8 @@ class Franchises(db.Model):
 
 
 class Teams(db.Model):
-    teamId = db.Column(db.String(32), primary_key=True)
+    id = db.Column(db.Integer(), primary_key=True, autoincrement=True)
+    # teamId = db.Column(db.String(32), primary_key=True)
     teamNick = db.Column(db.String(32), index=True)
     divId = db.Column(db.Enum(Division))
     leagueId = db.Column(db.String(32))
@@ -127,7 +137,7 @@ class Teams(db.Model):
 class Appearances(db.Model):
     personId = db.Column(db.ForeignKey('people.personId'), primary_key=True)
     yr = db.Column(db.Integer())
-    teamId = db.Column(db.ForeignKey('teams.teamId'))
+    teamNick = db.Column(db.ForeignKey('teams.teamNick'))
     leagueId = db.Column(db.String(32))
     totalGames = db.Column(db.Integer())
     totalGamesStarted = db.Column(db.Integer())
@@ -153,36 +163,40 @@ class Appearances(db.Model):
 
 class People(db.Model):
     personId = db.Column(db.String(100), primary_key=True)
-
-    birthYear = db.Column(db.Integer())
-    birthMonth = db.Column(db.Integer())
-    birthDay = db.Column(db.Integer())
+    birthDate = db.Column(db.Date())
+    # birthYear = db.Column(db.Integer())
+    # birthMonth = db.Column(db.Integer())
+    # birthDay = db.Column(db.Integer())
     birthCountry = db.Column(db.String(100))
     birthState = db.Column(db.String(100))
     birthCity = db.Column(db.String(100))
 
-    deathYear = db.Column(db.Integer())
-    deathMonth = db.Column(db.Integer())
-    deathDay = db.Column(db.Integer())
+    deathDate = db.Column(db.Date())
+    # deathYear = db.Column(db.Integer())
+    # deathMonth = db.Column(db.Integer())
+    # deathDay = db.Column(db.Integer())
     deathCountry = db.Column(db.String(100))
     deathState = db.Column(db.String(100))
     deathCity = db.Column(db.String(100))
 
-    debutYear = db.Column(db.Integer())
-    debutMonth = db.Column(db.Integer())
-    debutDay = db.Column(db.Integer())
-    debutCountry = db.Column(db.String(100))
-    debutState = db.Column(db.String(100))
-    debutCity = db.Column(db.String(100))
+    debutDate = db.Column(db.Date())
+    # debutYear = db.Column(db.Integer())
+    # debutMonth = db.Column(db.Integer())
+    # debutDay = db.Column(db.Integer())
+    # debutCountry = db.Column(db.String(100))
+    # debutState = db.Column(db.String(100))
+    # debutCity = db.Column(db.String(100))
 
-    finalGameYear = db.Column(db.Integer())
-    finalGameMonth = db.Column(db.Integer())
-    finalGameDay = db.Column(db.Integer())
-    finalGameCountry = db.Column(db.String(100))
-    finalGameState = db.Column(db.String(100))
-    finalGameCity = db.Column(db.String(100))
+    finalGameDate = db.Column(db.Date())
+    # finalGameYear = db.Column(db.Integer())
+    # finalGameMonth = db.Column(db.Integer())
+    # finalGameDay = db.Column(db.Integer())
+    # finalGameCountry = db.Column(db.String(100))
+    # finalGameState = db.Column(db.String(100))
+    # finalGameCity = db.Column(db.String(100))
 
     name = db.Column(db.String(255))
+    nameGiven = db.Column(db.String(255))
     weight = db.Column(db.Float())
     height = db.Column(db.Float())
     batHand = db.Column(db.Enum(Hand), nullable=True)
@@ -190,7 +204,7 @@ class People(db.Model):
 class Manager(db.Model):
     personId = db.Column(db.ForeignKey('people.personId'), primary_key=True)
     yr = db.Column(db.Integer(), primary_key=True)
-    teamId = db.Column(db.ForeignKey('teams.teamId'))
+    teamNick = db.Column(db.ForeignKey('teams.teamNick'))
     leagueId = db.Column(db.String(32))
     managerialOrder = db.Column(db.Integer())  # inseason = managerial order (perhaps name it that?)
     gamesManaged = db.Column(db.Integer())
@@ -204,7 +218,7 @@ class Batting(db.Model):
     personId = db.Column(db.ForeignKey('people.personId'), primary_key=True)
     yr = db.Column(db.Integer())
     stint = db.Column(db.Integer())
-    teamId = db.Column(db.ForeignKey('teams.teamId'))
+    teamNick = db.Column(db.ForeignKey('teams.teamNick'))
     leagueId = db.Column(db.String(32))
     games = db.Column(db.Integer())
     atBats = db.Column(db.Integer())
@@ -237,7 +251,7 @@ class Pitching(db.Model):
     personId = db.Column(db.ForeignKey('people.personId'), primary_key=True)
     yr = db.Column(db.Integer())
     stint = db.Column(db.Integer())
-    teamId = db.Column(db.ForeignKey('teams.teamId'))
+    teamNick = db.Column(db.ForeignKey('teams.teamNick'))
     leagueId = db.Column(db.String(32))
     wins = db.Column(db.Integer())
     losses = db.Column(db.Integer())
@@ -275,7 +289,7 @@ class PitchingPost(Pitching):
 class AllStarFull(db.Model):
     personId = db.Column(db.ForeignKey('people.personId'), primary_key=True)
     yr = db.Column(db.Integer(), primary_key=True)
-    teamId = db.Column(db.ForeignKey('teams.teamId'))
+    teamNick = db.Column(db.ForeignKey('teams.teamNick'))
     leagueId = db.Column(db.String(32))
     playedGame = db.Column(db.Boolean())
     gameNum = db.Column(db.Integer())
@@ -284,10 +298,10 @@ class AllStarFull(db.Model):
 
 
 class Fielding(db.Model):
-    # personId,yr,stint,teamID,lgID,POS,G,GS,InnOuts,PO,A,E,DP,PB,WP,SB,CS,ZR
+    # personId,yr,stint,teamNick,lgID,POS,G,GS,InnOuts,PO,A,E,DP,PB,WP,SB,CS,ZR
     personId = db.Column(db.ForeignKey('people.personId'), primary_key=True)
     yr = db.Column(db.Integer(), primary_key=True)
-    teamId = db.Column(db.ForeignKey('teams.teamId'))
+    teamNick = db.Column(db.ForeignKey('teams.teamNick'))
     leagueId = db.Column(db.String(32))
     stint = db.Column(db.Integer())
     position = db.Column(db.Integer())
@@ -307,7 +321,7 @@ class Fielding(db.Model):
 class HomeGames(db.Model):
     id = db.Column(db.Integer(), primary_key=True, autoincrement=True)
     yr = db.Column(db.Integer(), primary_key=True)
-    teamId = db.Column(db.ForeignKey('teams.teamId'))
+    teamNick = db.Column(db.ForeignKey('teams.teamNick'))
     leagueId = db.Column(db.String(32))
     firstGame = db.Column(db.Date())
     lastGame = db.Column(db.Date())
@@ -328,7 +342,7 @@ class CollegePlaying(db.Model):
 class Salaries(db.Model):
     personId = db.Column(db.ForeignKey('people.personId'), primary_key=True)
     yr = db.Column(db.Integer(), primary_key=True)
-    teamId = db.Column(db.String(3), primary_key=True)
+    teamNick = db.Column(db.String(3), primary_key=True)
     leagueId = db.Column(db.String(2))
     salary = db.Column(db.Float())
 
@@ -338,7 +352,7 @@ class Awards(db.Model):
     awardName = db.Column(db.String(255))
     personId = db.Column(db.ForeignKey('people.personId'), primary_key=True)
     yr = db.Column(db.Integer(), primary_key=True)
-    teamId = db.Column(db.ForeignKey('teams.teamId'))
+    teamNick = db.Column(db.ForeignKey('teams.teamNick'))
     leagueId = db.Column(db.String(32))
     tie = db.Column(db.Boolean())
     notes = db.Column(db.String(255))

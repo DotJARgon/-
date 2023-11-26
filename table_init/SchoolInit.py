@@ -13,19 +13,20 @@ def check_none(v):
 def process_line(line):
     new_line = {k: check_none(v) for k, v in line.items()}
     return new_line
-def create_franchise(line):
-    franch = Franchises(
-        franchiseId=line['franchID'],
-        franchiseName=line['franchName'],
-        active=YNChoice.parse(line['active']),
-        nationalAssocId=line['NAassoc']
+def create_school(line):
+    school = Schools(
+        schoolId=line['schoolID'],
+        name=line['name_full'],
+        city=line['city'],
+        state=line['state'],
+        country=line['country']
     )
-    return franch
+    return school
 
-def init_franchises(session):
+def init_schools(session):
 
     try:
-        session.query(Franchises).delete()
+        session.query(Schools).delete()
         session.commit()
         print('Cleared Franchises!')
     except:
@@ -33,12 +34,12 @@ def init_franchises(session):
         session.rollback()
         return
 
-    with open('../lahman/TeamsFranchises.csv', mode='r') as file:
+    with open('../lahman/Schools.csv', mode='r') as file:
         csvFile = csv.DictReader(file)
         i = 0
         for l in csvFile:
             line = process_line(l)
             print(line)
-            franch = create_franchise(line)
-            session.add(franch)
+            school = create_school(line)
+            session.add(school)
     session.commit()
