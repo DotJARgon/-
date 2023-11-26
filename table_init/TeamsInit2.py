@@ -17,7 +17,7 @@ def process_line(line):
     return new_line
 def create_teams(line, session):
     parks = session.query(Parks).filter(Parks.parkName.ilike(f"%{line['park']}%")).all()
-    parkName = None
+    parkName = line['park']
 
     if len(parks) == 0:
         parks = session.query(Parks).filter(Parks.parkAlias.ilike(f"%{line['park']}%")).all()
@@ -102,4 +102,4 @@ def init_teams(session):
             line = process_line(l)
             teams = create_teams(line, session)
             session.add(teams)
-    # session.commit()
+    session.commit()

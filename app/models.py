@@ -87,7 +87,8 @@ class Teams(db.Model):
     franchiseId = db.Column(db.ForeignKey('franchises.franchiseId'))
     yr = db.Column(db.Integer())
 
-    parkName = db.Column(db.ForeignKey('parks.parkName'))
+    # parkName = db.Column(db.ForeignKey('parks.parkName'))
+    parkName = db.Column(db.String(255))
     attendance = db.Column(db.Integer())
 
     rank = db.Column(db.Integer())
@@ -317,6 +318,12 @@ class Fielding(db.Model):
     opponentStolenBases = db.Column(db.Integer())
     opponentsCaughtStealing = db.Column(db.Integer())
     zoneRating = db.Column(db.Integer())
+
+class TeamIds(db.Model):
+    teamId = db.Column(db.String(32), primary_key=True)
+    yr = db.Column(db.Integer(), primary_key=True)
+    teamNick = db.Column(db.String(255))
+    teamName = db.Column(db.String(255))
 
 class HomeGames(db.Model):
     id = db.Column(db.Integer(), primary_key=True, autoincrement=True)
