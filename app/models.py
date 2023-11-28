@@ -4,22 +4,14 @@ from app import db, login
 import enum
 
 
-# Unfinished:
-#   BattingPost, PitchingPost, FieldingPost, HomeGame, School, CollegePlaying, Awards, Hall of Fame, Salary
-# Finished
-#   User, People, Parks, Franchise, Teams, Appearances, Manager, Batting, Pitching, Fielding, All Star
-
 class Division(enum.Enum):
     W = 1  # west
     E = 2  # east
     C = 3  # central
-
-
 class YNChoice(enum.Enum):
     Y = 1  # yes
     N = 2  # no
     X = 3  # not applicable
-
     @staticmethod
     def parse(c):
         if c == 'Y':
@@ -29,8 +21,6 @@ class YNChoice(enum.Enum):
         elif c == 'NA':
             return YNChoice.X
         return None
-
-
 class Hand(enum.Enum):
     L = 1  # left
     R = 2  # right
@@ -44,6 +34,8 @@ class Hand(enum.Enum):
         elif h == 'B':
             return Hand.B
         return None
+
+
 @login.user_loader
 def load_user(id):
     return User.query.get(int(id))
@@ -51,6 +43,7 @@ class User(UserMixin, db.Model):
     id = db.Column(db.Integer, primary_key=True)
     username = db.Column(db.String(64), index=True, unique=True)
     password_hash = db.Column(db.String(128))
+    count = db.Column(db.Integer())
 
     def __repr__(self):
         return self.username
@@ -74,18 +67,23 @@ class Parks(db.Model):
 class Franchises(db.Model):
     franchiseId = db.Column(db.String(32), primary_key=True)
     franchiseName = db.Column(db.String(100))
-    active = db.Column(db.Enum(YNChoice), )
+    active = db.Column(db.Enum(YNChoice))
     nationalAssocId = db.Column(db.String(32))
 
+class Leagues(db.Model):
+    leagueId = db.Column(db.String(2))
+    name = db.Column(db.String(50))
+    active = db.Column(db.Enum(YNChoice))
 
 class Teams(db.Model):
     teamId = db.Column(db.Integer(), primary_key=True, autoincrement=True)
     yr = db.Column(db.Integer())
     teamNick = db.Column(db.String(32))
-    teamName = db.Column(db.String(255))
+    teamName = db.Column(db.String(50))
     divId = db.Column(db.Enum(Division))
-    leagueId = db.Column(db.String(32))
+    leagueId = db.Column(db.ForeignKey('leagues.leagueId'))
     franchiseId = db.Column(db.ForeignKey('franchises.franchiseId'))
+    unique = db.UniqueConstraint(yr, teamNick, leagueId)
 
     # parkName = db.Column(db.ForeignKey('parks.parkName'))
     parkName = db.Column(db.String(255))
@@ -201,7 +199,7 @@ class People(db.Model):
     height = db.Column(db.Float())
     batHand = db.Column(db.Enum(Hand), nullable=True)
     throwHand = db.Column(db.Enum(Hand), nullable=True)
-class Manager(db.Model):
+class Managers(db.Model):
     personId = db.Column(db.ForeignKey('people.personId'), primary_key=True)
     yr = db.Column(db.Integer(), primary_key=True)
     teamId = db.Column(db.ForeignKey('teams.teamId'))
@@ -235,8 +233,6 @@ class Batting(db.Model):
     sacrificeHits = db.Column(db.Integer())
     sacrificeFlies = db.Column(db.Integer())
     groundedIntoDoublePlays = db.Column(db.Integer())
-
-
 class BattingPost(db.Model):
     personId = db.Column(db.ForeignKey('people.personId'), primary_key=True)
     yr = db.Column(db.Integer(), primary_key=True)
@@ -259,7 +255,6 @@ class BattingPost(db.Model):
     sacrificeHits = db.Column(db.Integer())
     sacrificeFlies = db.Column(db.Integer())
     groundedIntoDoublePlays = db.Column(db.Integer())
-
 
 class Pitching(db.Model):
     personId = db.Column(db.ForeignKey('people.personId'), primary_key=True)
@@ -291,8 +286,6 @@ class Pitching(db.Model):
     opponentSacrifices = db.Column(db.Integer())
     opponentSacrificeFlies = db.Column(db.Integer())
     groundIntoDouble = db.Column(db.Integer())
-
-
 class PitchingPost(db.Model):
     personId = db.Column(db.ForeignKey('people.personId'), primary_key=True)
     yr = db.Column(db.Integer(), primary_key=True)
@@ -324,18 +317,6 @@ class PitchingPost(db.Model):
     opponentSacrifices = db.Column(db.Integer())
     opponentSacrificeFlies = db.Column(db.Integer())
     groundIntoDouble = db.Column(db.Integer())
-
-
-class AllStarFull(db.Model):
-    personId = db.Column(db.ForeignKey('people.personId'), primary_key=True)
-    yr = db.Column(db.Integer(), primary_key=True)
-    teamId = db.Column(db.ForeignKey('teams.teamId'))
-    playedGame = db.Column(db.Boolean())
-    gameNum = db.Column(db.Integer())
-    gameId = db.Column(db.String(32))
-    startingPos = db.Column(db.Integer())
-
-
 class Fielding(db.Model):
     # personId,yr,stint,teamNick,lgID,POS,G,GS,InnOuts,PO,A,E,DP,PB,WP,SB,CS,ZR
     personId = db.Column(db.ForeignKey('people.personId'), primary_key=True)
@@ -355,12 +336,35 @@ class Fielding(db.Model):
     opponentStolenBases = db.Column(db.Integer())
     opponentsCaughtStealing = db.Column(db.Integer())
     zoneRating = db.Column(db.Integer())
+class FieldingPost(db.Model):
+    # personId,yr,stint,teamNick,lgID,POS,G,GS,InnOuts,PO,A,E,DP,PB,WP,SB,CS,ZR
+    personId = db.Column(db.ForeignKey('people.personId'), primary_key=True)
+    yr = db.Column(db.Integer(), primary_key=True)
+    teamId = db.Column(db.ForeignKey('teams.teamId'))
+    round = db.Column(db.Integer())
+    position = db.Column(db.Integer())
+    games = db.Column(db.Integer())
+    gamesStarted = db.Column(db.Integer())
+    innOuts = db.Column(db.Integer())
+    putouts = db.Column(db.Integer())
+    assists = db.Column(db.Integer())
+    errors = db.Column(db.Integer())
+    doublePlays = db.Column(db.Integer())
+    passedBalls = db.Column(db.Integer())
+    wildPitches = db.Column(db.Integer())
+    opponentStolenBases = db.Column(db.Integer())
+    opponentsCaughtStealing = db.Column(db.Integer())
+    zoneRating = db.Column(db.Integer())
 
-# class TeamIds(db.Model):
-#     teamId = db.Column(db.String(32), primary_key=True)
-#     yr = db.Column(db.Integer(), primary_key=True)
-#     teamNick = db.Column(db.String(255))
-#     teamName = db.Column(db.String(255))
+class AllStarFull(db.Model):
+    personId = db.Column(db.ForeignKey('people.personId'), primary_key=True)
+    yr = db.Column(db.Integer(), primary_key=True)
+    teamId = db.Column(db.ForeignKey('teams.teamId'))
+    playedGame = db.Column(db.Boolean())
+    gameNum = db.Column(db.Integer())
+    gameId = db.Column(db.String(32))
+    startingPos = db.Column(db.Integer())
+
 
 class HomeGames(db.Model):
     id = db.Column(db.Integer(), primary_key=True, autoincrement=True)
@@ -371,6 +375,8 @@ class HomeGames(db.Model):
     totalGames = db.Column(db.Integer())
     totalOpenings = db.Column(db.Integer())
     totalAttendance = db.Column(db.Integer())
+
+
 class Schools(db.Model):
     schoolId = db.Column(db.String(15), primary_key=True)
     name = db.Column(db.String(255))
@@ -392,12 +398,12 @@ class Salaries(db.Model):
 class Awards(db.Model):
     id = db.Column(db.Integer(), primary_key=True, autoincrement=True)
     awardName = db.Column(db.String(255))
-    personId = db.Column(db.ForeignKey('people.personId'), primary_key=True)
-    yr = db.Column(db.Integer(), primary_key=True)
+    personId = db.Column(db.ForeignKey('people.personId'))
+    yr = db.Column(db.Integer())
     teamId = db.Column(db.ForeignKey('teams.teamId'))
-    leagueId = db.Column(db.String(32))
     tie = db.Column(db.Boolean())
     notes = db.Column(db.String(255))
+    unique = db.UniqueConstraint(yr, personId, awardName)
 
 
 class HallOfFame(db.Model):

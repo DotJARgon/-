@@ -3,7 +3,7 @@ from flask_login import login_user, logout_user, current_user, login_required
 from werkzeug.urls import url_parse
 from app import app, db
 from app.forms import LoginForm, RegistrationForm, RequestForm
-from app.models import User, Manager, Teams
+from app.models import User, Managers, Teams, People
 
 
 @app.route('/')
@@ -66,23 +66,35 @@ def register():
 def request():
     form = RequestForm()
     if form.is_submitted():
-        '''TODO: Query the database and route to team.html with the given team name and year'''
+        '''TODO: route to team.html with the given team name and year'''
     return render_template('request.html', title='Request Data', form=form)
 
 
 @app.route('/team', methods=['GET'])
 def team(teamName, year):
+    teamId = db.session.execute(
+        db.select(Teams.c.teamId).where(Teams.c.teamName == teamName & Teams.c.yr == year)
+    )
+    rank = db.session.execute(db.select(Teams.c.rank).where(Teams.c.teamId == teamId))
+    record = "TODO"
+    manNames = db.session.execute(
+        db.select(People.c.nameFirst + ' ' + People.c.nameLast)
+        .join_from(People, Managers)
+        .where(Managers.c.teamId == teamId)
+    )
     return render_template('team.html', title=teamName)
 
 
 @app.route('/manager', methods=['GET'])
-def team(manID):
+def team(manId):
     manName = db.session.execute(
-        db.select(Manager.c.nameFirst + ' ' + Manager.c.nameLast).where(Manager.c.personId == manID)
+        db.select(People.c.nameFirst + ' ' + People.c.nameLast)
+        .join_from(People, Managers)
+        .where(Managers.c.personId == manId)
     )
-    # data = db.session.execute(
-    #     db.select(Teams.c.name, Manager.c.year).join_from(
-    #         Manager, Teams
-    #     ).where(Manager.c.)
-    # )
+    data = db.session.execute(
+        db.select(Teams.c.name, Managers.c.year)
+        .join_from(Managers, Teams)
+        .where(Managers.c.personId == manId)
+    )
     return render_template('team.html', title=manName)
