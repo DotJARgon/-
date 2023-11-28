@@ -312,11 +312,11 @@ class Fielding(db.Model):
     opponentsCaughtStealing = db.Column(db.Integer())
     zoneRating = db.Column(db.Integer())
 
-class TeamIds(db.Model):
-    teamId = db.Column(db.String(32), primary_key=True)
-    yr = db.Column(db.Integer(), primary_key=True)
-    teamNick = db.Column(db.String(255))
-    teamName = db.Column(db.String(255))
+# class TeamIds(db.Model):
+#     teamId = db.Column(db.String(32), primary_key=True)
+#     yr = db.Column(db.Integer(), primary_key=True)
+#     teamNick = db.Column(db.String(255))
+#     teamName = db.Column(db.String(255))
 
 class HomeGames(db.Model):
     id = db.Column(db.Integer(), primary_key=True, autoincrement=True)
@@ -350,7 +350,7 @@ class Awards(db.Model):
     awardName = db.Column(db.String(255))
     personId = db.Column(db.ForeignKey('people.personId'), primary_key=True)
     yr = db.Column(db.Integer(), primary_key=True)
-    teamNick = db.Column(db.ForeignKey('teams.teamId'))
+    teamId = db.Column(db.ForeignKey('teams.teamId'))
     leagueId = db.Column(db.String(32))
     tie = db.Column(db.Boolean())
     notes = db.Column(db.String(255))
