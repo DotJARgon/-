@@ -2,8 +2,8 @@ from flask import render_template, flash, redirect, url_for, request
 from flask_login import login_user, logout_user, current_user, login_required
 from werkzeug.urls import url_parse
 from app import app, db
-from app.forms import LoginForm, RegistrationForm
-from app.models import User
+from app.forms import LoginForm, RegistrationForm, RequestForm
+from app.models import User, Manager, Teams
 
 
 @app.route('/')
@@ -60,3 +60,29 @@ def register():
         flash('Congratulations, you are now a registered user!')
         return redirect(url_for('login'))
     return render_template('register.html', title='Register', form=form)
+
+
+@app.route('/request', methods=['GET'])
+def request():
+    form = RequestForm()
+    if form.is_submitted():
+        '''TODO: Query the database and route to team.html with the given team name and year'''
+    return render_template('request.html', title='Request Data', form=form)
+
+
+@app.route('/team', methods=['GET'])
+def team(teamName, year):
+    return render_template('team.html', title=teamName)
+
+
+@app.route('/manager', methods=['GET'])
+def team(manID):
+    manName = db.session.execute(
+        db.select(Manager.c.nameFirst + ' ' + Manager.c.nameLast).where(Manager.c.personId == manID)
+    )
+    # data = db.session.execute(
+    #     db.select(Teams.c.name, Manager.c.year).join_from(
+    #         Manager, Teams
+    #     ).where(Manager.c.)
+    # )
+    return render_template('team.html', title=manName)

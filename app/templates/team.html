@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>TEAM NAME HERE</title>
+</head>
+<body>
+    {% with managers = /*TODO: insert query*/) %}
+    {% if managers %}
+    <ul>
+        {% for manager in managers %}
+        <li>{{ manager }}</li>
+        {% endfor %}
+    </ul>
+    {% endif %}
+    {% endwith %}
+</body>
+</html>
