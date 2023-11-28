@@ -79,9 +79,9 @@ class Franchises(db.Model):
 
 
 class Teams(db.Model):
-    id = db.Column(db.Integer(), primary_key=True, autoincrement=True)
-    teamId = db.Column(db.String(32), index=True)
-    yr = db.Column(db.Integer(), index=True)
+    # id = db.Column(db.Integer(), primary_key=True, autoincrement=True)
+    teamId = db.Column(db.Integer(), primary_key=True, autoincrement=True)
+    yr = db.Column(db.Integer())
     teamNick = db.Column(db.String(32))
     divId = db.Column(db.Enum(Division))
     leagueId = db.Column(db.String(32))
@@ -292,7 +292,7 @@ class PitchingPost(Pitching):
 class AllStarFull(db.Model):
     personId = db.Column(db.ForeignKey('people.personId'), primary_key=True)
     yr = db.Column(db.Integer(), primary_key=True)
-    teamNick = db.Column(db.ForeignKey('teams.teamId'))
+    teamId = db.Column(db.ForeignKey('teams.teamId'))
     leagueId = db.Column(db.String(32))
     playedGame = db.Column(db.Boolean())
     gameNum = db.Column(db.Integer())
