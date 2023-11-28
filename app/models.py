@@ -79,7 +79,6 @@ class Franchises(db.Model):
 
 
 class Teams(db.Model):
-    # id = db.Column(db.Integer(), primary_key=True, autoincrement=True)
     teamId = db.Column(db.Integer(), primary_key=True, autoincrement=True)
     yr = db.Column(db.Integer())
     teamNick = db.Column(db.String(32))
@@ -137,11 +136,8 @@ class Teams(db.Model):
 
 class Appearances(db.Model):
     personId = db.Column(db.ForeignKey('people.personId'), primary_key=True)
-    # teamId = db.Column(db.String(255), db.ForeignKey('teams.teamId'), nullable=False)
     teamId = db.Column(db.ForeignKey('teams.teamId'))
     yr = db.Column(db.Integer())
-    # teamNick = db.Column(db.ForeignKey('teams.teamId'))
-    leagueId = db.Column(db.String(32))
     totalGames = db.Column(db.Integer())
     totalGamesStarted = db.Column(db.Integer())
     gamesBatted = db.Column(db.Integer())
@@ -207,8 +203,7 @@ class People(db.Model):
 class Manager(db.Model):
     personId = db.Column(db.ForeignKey('people.personId'), primary_key=True)
     yr = db.Column(db.Integer(), primary_key=True)
-    teamNick = db.Column(db.ForeignKey('teams.teamId'))
-    leagueId = db.Column(db.String(32))
+    teamId = db.Column(db.ForeignKey('teams.teamId'))
     managerialOrder = db.Column(db.Integer())  # inseason = managerial order (perhaps name it that?)
     gamesManaged = db.Column(db.Integer())
     wins = db.Column(db.Integer())
@@ -221,8 +216,7 @@ class Batting(db.Model):
     personId = db.Column(db.ForeignKey('people.personId'), primary_key=True)
     yr = db.Column(db.Integer())
     stint = db.Column(db.Integer())
-    teamNick = db.Column(db.ForeignKey('teams.teamId'))
-    leagueId = db.Column(db.String(32))
+    teamId = db.Column(db.ForeignKey('teams.teamId'))
     games = db.Column(db.Integer())
     atBats = db.Column(db.Integer())
     runs = db.Column(db.Integer())
@@ -254,8 +248,7 @@ class Pitching(db.Model):
     personId = db.Column(db.ForeignKey('people.personId'), primary_key=True)
     yr = db.Column(db.Integer())
     stint = db.Column(db.Integer())
-    teamNick = db.Column(db.ForeignKey('teams.teamId'))
-    leagueId = db.Column(db.String(32))
+    teamId = db.Column(db.ForeignKey('teams.teamId'))
     wins = db.Column(db.Integer())
     losses = db.Column(db.Integer())
     games = db.Column(db.Integer())
@@ -293,7 +286,6 @@ class AllStarFull(db.Model):
     personId = db.Column(db.ForeignKey('people.personId'), primary_key=True)
     yr = db.Column(db.Integer(), primary_key=True)
     teamId = db.Column(db.ForeignKey('teams.teamId'))
-    leagueId = db.Column(db.String(32))
     playedGame = db.Column(db.Boolean())
     gameNum = db.Column(db.Integer())
     gameId = db.Column(db.String(32))
@@ -304,8 +296,7 @@ class Fielding(db.Model):
     # personId,yr,stint,teamNick,lgID,POS,G,GS,InnOuts,PO,A,E,DP,PB,WP,SB,CS,ZR
     personId = db.Column(db.ForeignKey('people.personId'), primary_key=True)
     yr = db.Column(db.Integer(), primary_key=True)
-    teamNick = db.Column(db.ForeignKey('teams.teamId'))
-    leagueId = db.Column(db.String(32))
+    teamId = db.Column(db.ForeignKey('teams.teamId'))
     stint = db.Column(db.Integer())
     position = db.Column(db.Integer())
     games = db.Column(db.Integer())
@@ -330,8 +321,7 @@ class TeamIds(db.Model):
 class HomeGames(db.Model):
     id = db.Column(db.Integer(), primary_key=True, autoincrement=True)
     yr = db.Column(db.Integer(), primary_key=True)
-    teamNick = db.Column(db.ForeignKey('teams.teamId'))
-    leagueId = db.Column(db.String(32))
+    teamId = db.Column(db.ForeignKey('teams.teamId'))
     firstGame = db.Column(db.Date())
     lastGame = db.Column(db.Date())
     totalGames = db.Column(db.Integer())
@@ -351,8 +341,7 @@ class CollegePlaying(db.Model):
 class Salaries(db.Model):
     personId = db.Column(db.ForeignKey('people.personId'), primary_key=True)
     yr = db.Column(db.Integer(), primary_key=True)
-    teamNick = db.Column(db.String(3), primary_key=True)
-    leagueId = db.Column(db.String(2))
+    teamId = db.Column(db.ForeignKey('teams.teamId'))
     salary = db.Column(db.Float())
 
 

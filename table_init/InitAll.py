@@ -19,5 +19,5 @@ session = scoped_session(sessionmaker(autocommit=False,
 # init_schools(session)
 # init_people(session)
 # init_teams(session)
-create_unique_teamid(session)
+# create_unique_teamid(session)
 session.close()
