@@ -29,6 +29,7 @@ def create_teams(line, session):
         print(f"\t{line['park']} : {p.parkName}")
     team = Teams(
         teamNick=line['teamID'],
+        teamName=line['name'],
         divId=line['divID'],
         leagueId=line['lgID'],
         franchiseId=line['franchID'],

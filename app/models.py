@@ -82,6 +82,7 @@ class Teams(db.Model):
     teamId = db.Column(db.Integer(), primary_key=True, autoincrement=True)
     yr = db.Column(db.Integer())
     teamNick = db.Column(db.String(32))
+    teamName = db.Column(db.String(255))
     divId = db.Column(db.Enum(Division))
     leagueId = db.Column(db.String(32))
     franchiseId = db.Column(db.ForeignKey('franchises.franchiseId'))
@@ -214,8 +215,8 @@ class Manager(db.Model):
 
 class Batting(db.Model):
     personId = db.Column(db.ForeignKey('people.personId'), primary_key=True)
-    yr = db.Column(db.Integer())
-    stint = db.Column(db.Integer())
+    yr = db.Column(db.Integer(), primary_key=True)
+    stint = db.Column(db.Integer(), primary_key=True)
     teamId = db.Column(db.ForeignKey('teams.teamId'))
     games = db.Column(db.Integer())
     atBats = db.Column(db.Integer())
@@ -232,22 +233,38 @@ class Batting(db.Model):
     intentionalWalks = db.Column(db.Integer())
     hitByPitch = db.Column(db.Integer())
     sacrificeHits = db.Column(db.Integer())
-    sacrificeFlieds = db.Column(db.Integer())
+    sacrificeFlies = db.Column(db.Integer())
     groundedIntoDoublePlays = db.Column(db.Integer())
 
 
-class BattingPost(Batting):
-    """"
-    identical to batting, fill it later when we decide on final
-    paras
-    """
-    pass
+class BattingPost(db.Model):
+    personId = db.Column(db.ForeignKey('people.personId'), primary_key=True)
+    yr = db.Column(db.Integer(), primary_key=True)
+    round = db.Column(db.String(32), primary_key=True)
+    teamId = db.Column(db.ForeignKey('teams.teamId'))
+    games = db.Column(db.Integer())
+    atBats = db.Column(db.Integer())
+    runs = db.Column(db.Integer())
+    hits = db.Column(db.Integer())
+    doubles = db.Column(db.Integer())
+    triples = db.Column(db.Integer())
+    homeruns = db.Column(db.Integer())
+    runsBattedIn = db.Column(db.Integer())
+    stolenBases = db.Column(db.Integer())
+    caughtStealing = db.Column(db.Integer())
+    baseOnBalls = db.Column(db.Integer())
+    strikeouts = db.Column(db.Integer())
+    intentionalWalks = db.Column(db.Integer())
+    hitByPitch = db.Column(db.Integer())
+    sacrificeHits = db.Column(db.Integer())
+    sacrificeFlies = db.Column(db.Integer())
+    groundedIntoDoublePlays = db.Column(db.Integer())
 
 
 class Pitching(db.Model):
     personId = db.Column(db.ForeignKey('people.personId'), primary_key=True)
-    yr = db.Column(db.Integer())
-    stint = db.Column(db.Integer())
+    yr = db.Column(db.Integer(), primary_key=True)
+    stint = db.Column(db.Integer(), primary_key=True)
     teamId = db.Column(db.ForeignKey('teams.teamId'))
     wins = db.Column(db.Integer())
     losses = db.Column(db.Integer())
@@ -268,6 +285,7 @@ class Pitching(db.Model):
     wildPitches = db.Column(db.Integer())
     battersHitByPitch = db.Column(db.Integer())
     balks = db.Column(db.Integer())
+    battersFacedByPitch = db.Column(db.Integer())
     gamesFinished = db.Column(db.Integer())
     runsAllowed = db.Column(db.Integer())
     opponentSacrifices = db.Column(db.Integer())
@@ -275,11 +293,37 @@ class Pitching(db.Model):
     groundIntoDouble = db.Column(db.Integer())
 
 
-class PitchingPost(Pitching):
-    """
-    Same as pitching just need to decide later
-    """
-    pass
+class PitchingPost(db.Model):
+    personId = db.Column(db.ForeignKey('people.personId'), primary_key=True)
+    yr = db.Column(db.Integer(), primary_key=True)
+    # stint = db.Column(db.Integer(), primary_key=True)
+    round = db.Column(db.String(32), primary_key=True)
+    teamId = db.Column(db.ForeignKey('teams.teamId'))
+    wins = db.Column(db.Integer())
+    losses = db.Column(db.Integer())
+    games = db.Column(db.Integer())
+    gamesStarted = db.Column(db.Integer())
+    completeGames = db.Column(db.Integer())
+    shutouts = db.Column(db.Integer())
+    saves = db.Column(db.Integer())
+    outsPitched = db.Column(db.Integer())
+    hits = db.Column(db.Integer())
+    earnedRuns = db.Column(db.Integer())
+    homeruns = db.Column(db.Integer())
+    walks = db.Column(db.Integer())
+    strikeouts = db.Column(db.Integer())
+    oppBattingAvg = db.Column(db.Float())
+    earnedRunAverage = db.Column(db.Float())
+    intentionalWalks = db.Column(db.Integer())
+    wildPitches = db.Column(db.Integer())
+    battersHitByPitch = db.Column(db.Integer())
+    balks = db.Column(db.Integer())
+    battersFacedByPitch = db.Column(db.Integer())
+    gamesFinished = db.Column(db.Integer())
+    runsAllowed = db.Column(db.Integer())
+    opponentSacrifices = db.Column(db.Integer())
+    opponentSacrificeFlies = db.Column(db.Integer())
+    groundIntoDouble = db.Column(db.Integer())
 
 
 class AllStarFull(db.Model):
