@@ -80,12 +80,12 @@ class Franchises(db.Model):
 
 class Teams(db.Model):
     id = db.Column(db.Integer(), primary_key=True, autoincrement=True)
-    # teamId = db.Column(db.String(32), primary_key=True)
-    teamNick = db.Column(db.String(32), index=True)
+    teamId = db.Column(db.String(32), index=True)
+    yr = db.Column(db.Integer(), index=True)
+    teamNick = db.Column(db.String(32))
     divId = db.Column(db.Enum(Division))
     leagueId = db.Column(db.String(32))
     franchiseId = db.Column(db.ForeignKey('franchises.franchiseId'))
-    yr = db.Column(db.Integer())
 
     # parkName = db.Column(db.ForeignKey('parks.parkName'))
     parkName = db.Column(db.String(255))
@@ -137,8 +137,10 @@ class Teams(db.Model):
 
 class Appearances(db.Model):
     personId = db.Column(db.ForeignKey('people.personId'), primary_key=True)
+    # teamId = db.Column(db.String(255), db.ForeignKey('teams.teamId'), nullable=False)
+    teamId = db.Column(db.ForeignKey('teams.teamId'))
     yr = db.Column(db.Integer())
-    teamNick = db.Column(db.ForeignKey('teams.teamNick'))
+    # teamNick = db.Column(db.ForeignKey('teams.teamId'))
     leagueId = db.Column(db.String(32))
     totalGames = db.Column(db.Integer())
     totalGamesStarted = db.Column(db.Integer())
@@ -205,7 +207,7 @@ class People(db.Model):
 class Manager(db.Model):
     personId = db.Column(db.ForeignKey('people.personId'), primary_key=True)
     yr = db.Column(db.Integer(), primary_key=True)
-    teamNick = db.Column(db.ForeignKey('teams.teamNick'))
+    teamNick = db.Column(db.ForeignKey('teams.teamId'))
     leagueId = db.Column(db.String(32))
     managerialOrder = db.Column(db.Integer())  # inseason = managerial order (perhaps name it that?)
     gamesManaged = db.Column(db.Integer())
@@ -219,7 +221,7 @@ class Batting(db.Model):
     personId = db.Column(db.ForeignKey('people.personId'), primary_key=True)
     yr = db.Column(db.Integer())
     stint = db.Column(db.Integer())
-    teamNick = db.Column(db.ForeignKey('teams.teamNick'))
+    teamNick = db.Column(db.ForeignKey('teams.teamId'))
     leagueId = db.Column(db.String(32))
     games = db.Column(db.Integer())
     atBats = db.Column(db.Integer())
@@ -252,7 +254,7 @@ class Pitching(db.Model):
     personId = db.Column(db.ForeignKey('people.personId'), primary_key=True)
     yr = db.Column(db.Integer())
     stint = db.Column(db.Integer())
-    teamNick = db.Column(db.ForeignKey('teams.teamNick'))
+    teamNick = db.Column(db.ForeignKey('teams.teamId'))
     leagueId = db.Column(db.String(32))
     wins = db.Column(db.Integer())
     losses = db.Column(db.Integer())
@@ -290,7 +292,7 @@ class PitchingPost(Pitching):
 class AllStarFull(db.Model):
     personId = db.Column(db.ForeignKey('people.personId'), primary_key=True)
     yr = db.Column(db.Integer(), primary_key=True)
-    teamNick = db.Column(db.ForeignKey('teams.teamNick'))
+    teamNick = db.Column(db.ForeignKey('teams.teamId'))
     leagueId = db.Column(db.String(32))
     playedGame = db.Column(db.Boolean())
     gameNum = db.Column(db.Integer())
@@ -302,7 +304,7 @@ class Fielding(db.Model):
     # personId,yr,stint,teamNick,lgID,POS,G,GS,InnOuts,PO,A,E,DP,PB,WP,SB,CS,ZR
     personId = db.Column(db.ForeignKey('people.personId'), primary_key=True)
     yr = db.Column(db.Integer(), primary_key=True)
-    teamNick = db.Column(db.ForeignKey('teams.teamNick'))
+    teamNick = db.Column(db.ForeignKey('teams.teamId'))
     leagueId = db.Column(db.String(32))
     stint = db.Column(db.Integer())
     position = db.Column(db.Integer())
@@ -328,7 +330,7 @@ class TeamIds(db.Model):
 class HomeGames(db.Model):
     id = db.Column(db.Integer(), primary_key=True, autoincrement=True)
     yr = db.Column(db.Integer(), primary_key=True)
-    teamNick = db.Column(db.ForeignKey('teams.teamNick'))
+    teamNick = db.Column(db.ForeignKey('teams.teamId'))
     leagueId = db.Column(db.String(32))
     firstGame = db.Column(db.Date())
     lastGame = db.Column(db.Date())
@@ -359,7 +361,7 @@ class Awards(db.Model):
     awardName = db.Column(db.String(255))
     personId = db.Column(db.ForeignKey('people.personId'), primary_key=True)
     yr = db.Column(db.Integer(), primary_key=True)
-    teamNick = db.Column(db.ForeignKey('teams.teamNick'))
+    teamNick = db.Column(db.ForeignKey('teams.teamId'))
     leagueId = db.Column(db.String(32))
     tie = db.Column(db.Boolean())
     notes = db.Column(db.String(255))
