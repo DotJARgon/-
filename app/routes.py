@@ -37,7 +37,7 @@ def login():
         next_page = request.args.get('next')
         if not next_page or url_parse(next_page).netloc != '':
             next_page = url_for('index')
-        return redirect(next_page)
+        return redirect('request')
     return render_template('login.html', title='Sign In', form=form)
 
 
@@ -86,7 +86,7 @@ def team(teamName, year):
     return render_template('team.html', title=teamName)
 
 
-@app.route('/manager', methods=['GET'])
+@app.route('/manager/<manId>', methods=['GET'])
 def manager(manId):
     manName = db.session.execute(
         db.select(People.c.nameFirst + ' ' + People.c.nameLast)
