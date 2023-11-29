@@ -17,6 +17,10 @@ from FieldingInit import init_fielding
 from FieldingPostInit import init_fielding_post
 from AppearancesInit import init_appearance
 from AllStarInit import init_allStarFull
+from HomeGamesInit import init_homegame
+from CollegePlayingInit import init_collegeplay
+from SalaryInit import init_salary
+from HallOfFameInit import init_hallOfFame
 
 uri = f"mysql+pymysql://{mysql['user']}:{mysql['password']}@{mysql['location']}/{mysql['database']}"
 engine = sqlalchemy.create_engine(uri)
@@ -37,5 +41,9 @@ session = scoped_session(sessionmaker(autocommit=False,
 # init_appearance(session)
 # init_fielding(session)
 # init_fielding_post(session)
-init_allStarFull(session)
+# init_allStarFull(session)
+# init_homegame(session)
+# init_collegeplay(session)
+# init_salary(session)
+init_hallOfFame(session)
 session.close()

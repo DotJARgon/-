@@ -370,8 +370,8 @@ class AllStarFull(db.Model):
 
 
 class HomeGames(db.Model):
-    id = db.Column(db.Integer(), primary_key=True, autoincrement=True)
-    yr = db.Column(db.Integer(), primary_key=True)
+    homegameId = db.Column(db.Integer(), primary_key=True, autoincrement=True)
+    yr = db.Column(db.Integer())
     teamId = db.Column(db.ForeignKey('teams.teamId'))
     firstGame = db.Column(db.Date())
     lastGame = db.Column(db.Date())
@@ -387,14 +387,17 @@ class Schools(db.Model):
     state = db.Column(db.String(55))
     country = db.Column(db.String(55))
 class CollegePlaying(db.Model):
-    schoolId = db.Column(db.ForeignKey('schools.schoolId'), primary_key=True)
+    collegePlayingId = db.Column(db.Integer(), primary_key=True, autoincrement=True)
+    schoolId = db.Column(db.ForeignKey('schools.schoolId'))
     personId = db.Column(db.ForeignKey('people.personId'))
-    yr = db.Column(db.Integer(), primary_key=True)
+    yr = db.Column(db.Integer())
+    unique = db.UniqueConstraint(schoolId, personId, yr)
+
 
 class Salaries(db.Model):
     personId = db.Column(db.ForeignKey('people.personId'), primary_key=True)
     yr = db.Column(db.Integer(), primary_key=True)
-    teamId = db.Column(db.ForeignKey('teams.teamId'))
+    teamId = db.Column(db.ForeignKey('teams.teamId'), primary_key=True)
     salary = db.Column(db.Float())
 
 
@@ -411,8 +414,8 @@ class Awards(db.Model):
 
 class HallOfFame(db.Model):
     personId = db.Column(db.ForeignKey('people.personId'), primary_key=True)
-    yr = db.Column(db.Integer())
-    votedBy = db.Column(db.String(255))
+    yr = db.Column(db.Integer(), primary_key=True)
+    votedBy = db.Column(db.String(255), primary_key=True)
     totalBallots = db.Column(db.Integer())
     totalNeededBallots = db.Column(db.Integer())
     totalVotes = db.Column(db.Integer())

@@ -28,9 +28,9 @@ def init_schools(session):
     try:
         session.query(Schools).delete()
         session.commit()
-        print('Cleared Franchises!')
+        print('Cleared Schools!')
     except:
-        print('Failed to clear Franchises!')
+        print('Failed to clear Schools!')
         session.rollback()
         return
 
