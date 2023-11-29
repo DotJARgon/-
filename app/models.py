@@ -71,7 +71,7 @@ class Franchises(db.Model):
     nationalAssocId = db.Column(db.String(32))
 
 class Leagues(db.Model):
-    leagueId = db.Column(db.String(2))
+    leagueId = db.Column(db.String(2), primary_key=True)
     name = db.Column(db.String(50))
     active = db.Column(db.Enum(YNChoice))
 

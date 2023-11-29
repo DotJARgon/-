@@ -71,7 +71,7 @@ def request():
 
 
 @app.route('/team', methods=['GET'])
-def team(teamName, year):
+def view_team(teamName, year):
     teamId = db.session.execute(
         db.select(Teams.c.teamId).where(Teams.c.teamName == teamName & Teams.c.yr == year)
     )
