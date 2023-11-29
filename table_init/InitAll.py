@@ -21,7 +21,8 @@ from HomeGamesInit import init_homegame
 from CollegePlayingInit import init_collegeplay
 from SalaryInit import init_salary
 from HallOfFameInit import init_hallOfFame
-
+from FieldingOFsplitInit import init_fieldOFsplit
+from FieldingOFInit import init_fieldingOF
 uri = f"mysql+pymysql://{mysql['user']}:{mysql['password']}@{mysql['location']}/{mysql['database']}"
 engine = sqlalchemy.create_engine(uri)
 session = scoped_session(sessionmaker(autocommit=False,
@@ -45,5 +46,7 @@ session = scoped_session(sessionmaker(autocommit=False,
 # init_homegame(session)
 # init_collegeplay(session)
 # init_salary(session)
-init_hallOfFame(session)
+# init_hallOfFame(session)
+# init_fieldOFsplit(session)
+init_fieldingOF(session)
 session.close()

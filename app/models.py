@@ -356,6 +356,27 @@ class FieldingPost(db.Model):
     passedBalls = db.Column(db.Integer())
     opponentStolenBases = db.Column(db.Integer())
     opponentsCaughtStealing = db.Column(db.Integer())
+class FieldingOF(db.Model):
+    personId = db.Column(db.ForeignKey('people.personId'), primary_key=True)
+    yr = db.Column(db.Integer(), primary_key=True)
+    stint = db.Column(db.Integer(), primary_key=True)
+    gamesLeftField = db.Column(db.Integer())
+    gamesCenterField = db.Column(db.Integer())
+    gamesRightField = db.Column(db.Integer())
+
+class FieldingOFSplit(db.Model):
+    personId = db.Column(db.ForeignKey('people.personId'), primary_key=True)
+    yr = db.Column(db.Integer(), primary_key=True)
+    stint = db.Column(db.Integer(), primary_key=True)
+    position = db.Column(db.String(10), primary_key=True)
+    teamId = db.Column(db.ForeignKey('teams.teamId'))
+    games = db.Column(db.Integer())
+    gamesStarted = db.Column(db.Integer())
+    innOuts = db.Column(db.Integer())
+    putouts = db.Column(db.Integer())
+    assists = db.Column(db.Integer())
+    errors = db.Column(db.Integer())
+    doublePlays = db.Column(db.Integer())
 
 class AllStarFull(db.Model):
     allstarfullId = db.Column(db.Integer(), primary_key=True, autoincrement=True)
