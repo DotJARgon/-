@@ -81,7 +81,8 @@ class Teams(db.Model):
     teamNick = db.Column(db.String(32))
     teamName = db.Column(db.String(50))
     divId = db.Column(db.Enum(Division))
-    leagueId = db.Column(db.ForeignKey('leagues.leagueId'))
+    # leagueId = db.Column(db.ForeignKey('leagues.leagueId'))
+    leagueId = db.Column(db.String(32))
     franchiseId = db.Column(db.ForeignKey('franchises.franchiseId'))
     unique = db.UniqueConstraint(yr, teamNick, leagueId)
 
@@ -202,8 +203,9 @@ class People(db.Model):
 class Managers(db.Model):
     personId = db.Column(db.ForeignKey('people.personId'), primary_key=True)
     yr = db.Column(db.Integer(), primary_key=True)
-    teamId = db.Column(db.ForeignKey('teams.teamId'))
-    managerialOrder = db.Column(db.Integer())  # inseason = managerial order (perhaps name it that?)
+    half = db.Column(db.Integer, primary_key=True)
+    teamId = db.Column(db.ForeignKey('teams.teamId'), primary_key=True)
+    managerialOrder = db.Column(db.Integer(), primary_key=True)  # inseason = managerial order (perhaps name it that?)
     gamesManaged = db.Column(db.Integer())
     wins = db.Column(db.Integer())
     losses = db.Column(db.Integer())

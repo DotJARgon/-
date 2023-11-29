@@ -11,6 +11,7 @@ from TeamsInit import create_unique_teamid
 from PitchingInit import init_pitching
 from PitchingPostInit import init_pitching_post
 from BattingInit import init_batting
+from ManagerInit import init_manager
 
 uri = f"mysql+pymysql://{mysql['user']}:{mysql['password']}@{mysql['location']}/{mysql['database']}"
 engine = sqlalchemy.create_engine(uri)
@@ -26,4 +27,5 @@ session = scoped_session(sessionmaker(autocommit=False,
 # init_pitching_post(session)
 # init_batting(session)
 # create_unique_teamid(session)
+init_manager(session)
 session.close()
