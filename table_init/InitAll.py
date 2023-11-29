@@ -13,7 +13,10 @@ from PitchingInit import init_pitching
 from PitchingPostInit import init_pitching_post
 from BattingInit import init_batting
 from ManagerInit import init_manager
+from FieldingInit import init_fielding
+from FieldingPostInit import init_fielding_post
 from AppearancesInit import init_appearance
+from AllStarInit import init_allStarFull
 
 uri = f"mysql+pymysql://{mysql['user']}:{mysql['password']}@{mysql['location']}/{mysql['database']}"
 engine = sqlalchemy.create_engine(uri)
@@ -31,5 +34,8 @@ session = scoped_session(sessionmaker(autocommit=False,
 # init_batting(session)
 # create_unique_teamid(session)
 # init_manager(session)
-init_appearance(session)
+# init_appearance(session)
+# init_fielding(session)
+# init_fielding_post(session)
+init_allStarFull(session)
 session.close()

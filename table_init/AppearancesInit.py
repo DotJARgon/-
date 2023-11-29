@@ -18,6 +18,11 @@ def create_appearance(line, session):
         teamNick=line['teamID'],
         leagueId=line['lgID'],
         yr=line['yearID']).all()
+    person = session.query(People).filter_by(
+        personId=line['playerID']
+    ).all()
+    if len(person) == 0:
+        return None
     # print('\t',teams[0].teamId)
     appearance = Appearances(
         personId=line['playerID'],
@@ -59,10 +64,13 @@ def init_appearance(session):
         i = 0
         for l in csvFile:
             line = process_line(l)
-            print(line)
+            # print(line)
             appearance = create_appearance(line, session)
-            session.add(appearance)
-            if i > 1000:
-                break
-            i+=1
+            if appearance is not None:
+                session.add(appearance)
+            else:
+                print(f"Player {line['playerID']} does not exist")
+            # if i > 1000:
+            #     break
+            # i+=1
             session.commit()
