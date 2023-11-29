@@ -71,7 +71,7 @@ def request():
 
 
 @app.route('/team', methods=['GET'])
-def view_team(teamName, year):
+def team(teamName, year):
     teamId = db.session.execute(
         db.select(Teams.c.teamId).where(Teams.c.teamName == teamName & Teams.c.yr == year)
     )
@@ -86,7 +86,7 @@ def view_team(teamName, year):
 
 
 @app.route('/manager', methods=['GET'])
-def team(manId):
+def manager(manId):
     manName = db.session.execute(
         db.select(People.c.nameFirst + ' ' + People.c.nameLast)
         .join_from(People, Managers)
