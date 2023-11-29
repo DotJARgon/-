@@ -5,6 +5,19 @@
     <title>{{ manName }}</title>
 </head>
 <body>
-
+    <h1>{{ manName }}</h1>
+    <a href="{{ url_for('request') }}">Home</a>
+    <table>
+        <tr>
+          <th>Team</th>
+          <th>Year</th>
+        </tr>
+        {% for team in {data} %}
+        <tr>
+          <td>{{data['teamName']}}</td>
+          <td>{{data['yr']}}</td>
+        </tr>
+        {{% endfor %}}
+    </table>
 </body>
 </html>
