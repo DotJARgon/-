@@ -41,7 +41,8 @@ def create_person(line):
 
         debutDate=line['debut'],
         finalGameDate=line['finalGame'],
-        name=f"{line['nameFirst']} {line['nameLast']}",
+        firstName=line['nameFirst'],
+        lastName=line['nameLast'],
         nameGiven=line['nameGiven'],
         weight=line['weight'],
         height=line['height'],
@@ -57,9 +58,9 @@ def init_people(session):
     try:
         session.query(People).delete()
         session.commit()
-        print('Cleared Franchises!')
+        print('Cleared People!')
     except:
-        print('Failed to clear Franchises!')
+        print('Failed to clear People!')
         session.rollback()
         return
 

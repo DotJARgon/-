@@ -14,9 +14,10 @@ def process_line(line):
     new_line = {k: check_none(v) for k, v in line.items()}
     return new_line
 def create_batting(line, session):
-    teams = session.query(Teams).filter_by(teamNick=line['teamID'], yr=line['yearID']).all()
-    # if line['playerID'] == 'brainas01':
-    #     print(line['playerID'], line['yearID'], line['stint'])
+    teams = session.query(Teams).filter_by(
+        teamNick=line['teamID'],
+        leagueId=line['lgID'],
+        yr=line['yearID']).all()
     batting = Batting(
         personId=line['playerID'],
         yr=line['yearID'],

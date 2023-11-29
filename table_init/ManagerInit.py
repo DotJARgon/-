@@ -37,7 +37,10 @@ def create_manager_half(line, session):
     )
     return manager
 def create_manager(line, session):
-    teams = session.query(Teams).filter_by(teamNick=line['teamID'], yr=line['yearID']).all()
+    teams = session.query(Teams).filter_by(
+        teamNick=line['teamID'],
+        leagueId=line['lgID'],
+        yr=line['yearID']).all()
     manager = Managers(
         personId=line["playerID"],
         yr=line["yearID"],

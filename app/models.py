@@ -136,8 +136,8 @@ class Teams(db.Model):
 
 class Appearances(db.Model):
     personId = db.Column(db.ForeignKey('people.personId'), primary_key=True)
-    teamId = db.Column(db.ForeignKey('teams.teamId'))
-    yr = db.Column(db.Integer())
+    teamId = db.Column(db.ForeignKey('teams.teamId'), primary_key=True)
+    yr = db.Column(db.Integer(), primary_key=True)
     totalGames = db.Column(db.Integer())
     totalGamesStarted = db.Column(db.Integer())
     gamesBatted = db.Column(db.Integer())
@@ -194,7 +194,8 @@ class People(db.Model):
     # finalGameState = db.Column(db.String(100))
     # finalGameCity = db.Column(db.String(100))
 
-    name = db.Column(db.String(255))
+    firstName = db.Column(db.String(255))
+    lastName = db.Column(db.String(255))
     nameGiven = db.Column(db.String(255))
     weight = db.Column(db.Float())
     height = db.Column(db.Float())
