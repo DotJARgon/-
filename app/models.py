@@ -427,7 +427,7 @@ class Awards(db.Model):
     awardName = db.Column(db.String(255))
     personId = db.Column(db.ForeignKey('people.personId'))
     yr = db.Column(db.Integer())
-    teamId = db.Column(db.ForeignKey('teams.teamId'))
+    leagueId = db.Column(db.String(255)) #to do fix me plz
     tie = db.Column(db.Boolean())
     notes = db.Column(db.String(255))
     unique = db.UniqueConstraint(yr, personId, awardName)
