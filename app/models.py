@@ -42,8 +42,9 @@ def load_user(id):
 class User(UserMixin, db.Model):
     id = db.Column(db.Integer, primary_key=True)
     username = db.Column(db.String(64), index=True, unique=True)
-    password_hash = db.Column(db.String(128))
-    count = db.Column(db.Integer())
+    password_hash = db.Column(db.String(128), nullable=False)
+    count = db.Column(db.Integer(), default=0, nullable=False)
+    is_admin = db.Column(db.Boolean(), default=False, nullable=False)
 
     def __repr__(self):
         return self.username
