@@ -433,6 +433,17 @@ class Awards(db.Model):
     notes = db.Column(db.String(255))
     unique = db.UniqueConstraint(yr, personId, awardName)
 
+class AwardsShare(db.Model):
+    id = db.Column(db.Integer(), primary_key=True, autoincrement=True)
+    awardName = db.Column(db.String(255))
+    personId = db.Column(db.ForeignKey('people.personId'))
+    yr = db.Column(db.Integer())
+    teamId = db.Column(db.ForeignKey('teams.teamId'))
+    pointsWon = db.Column(db.Integer())
+    pointsMax = db.Column(db.Integer())
+    votesFirst = db.Column(db.Integer())
+    unique = db.UniqueConstraint(yr, personId, awardName)
+
 
 class HallOfFame(db.Model):
     personId = db.Column(db.ForeignKey('people.personId'), primary_key=True)
