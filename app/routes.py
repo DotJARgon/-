@@ -98,34 +98,23 @@ def team(teamId):
         teamId=teamId
     ).first()
     if t is not None:
-        managers = db.session.query(Managers).filter_by(
-            teamId=teamId
-        ).all()
-        print(managers)
-        return render_template('team.html', title=t.teamName, managers=managers, teamName=t.teamName)
-    # teamId = db.session.execute(
-    #     db.select(Teams.c.teamId).where(Teams.c.teamName == teamName & Teams.c.yr == year)
-    # )
-    # rank = db.session.execute(db.select(Teams.c.rank).where(Teams.c.teamId == teamId))
-    # record = db.session.execute(db.select(Teams.c.wins / Teams.c.losses + Teams.c.wins).where(Teams.c.teamId == teamId))
-    # manNames = db.session.execute(
-    #     db.select(People.c.nameFirst + ' ' + People.c.nameLast, People.c.personId)
-    #     .join_from(People, Managers)
-    #     .where(Managers.c.teamId == teamId)
-    # )
-    return render_template('team.html', title=teamId, manNames=[], teamName='fuckoff')
+        managers = (db.session.query(People.firstName, People.lastName, People.personId)
+                   .filter(Managers.teamId == teamId)
+                   .filter(People.personId == Managers.personId
+                   ).all())
+        return render_template('team.html',
+            title=t.teamName,
+            managers=managers,
+            name=t.teamName,
+            rank=t.rank,
+            record=(t.wins/(t.wins+t.losses)),
+            year=t.yr
+        )
+    return render_template('team.html', name='ERROR')
 
 
 @app.route('/manager/<manId>', methods=['GET'])
 def manager(manId):
-    manName = db.session.execute(
-        db.select(People.c.nameFirst + ' ' + People.c.nameLast)
-        .join_from(People, Managers)
-        .where(Managers.c.personId == manId)
-    )
-    data = db.session.execute(
-        db.select(Teams.c.name, Managers.c.year)
-        .join_from(Managers, Teams)
-        .where(Managers.c.personId == manId)
-    )
-    return render_template('manager.html', title=manName)
+    manName = db.session.query(People.firstName, People.lastName).filter_by(personId=manId).first()
+    teams = db.session.query(Teams.teamName, Teams.yr).filter(Teams.teamId == Managers.teamId).filter(Managers.personId == manId).all()
+    return render_template('manager.html', name=(manName.firstName + ' ' + manName.lastName), teams=teams)

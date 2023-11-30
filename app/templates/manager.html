@@ -2,22 +2,22 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>{{ manName }}</title>
+    <title>{{ name }}</title>
 </head>
 <body>
-    <h1>{{ manName }}</h1>
+    <h1>{{ name }}</h1>
     <a href="{{ url_for('request') }}">Home</a>
     <table>
         <tr>
           <th>Team</th>
           <th>Year</th>
         </tr>
-        {% for team in {data} %}
+        {% for team in teams %}
         <tr>
-          <td>{{data['teamName']}}</td>
-          <td>{{data['yr']}}</td>
+          <td>{{ team.teamName }}</td>
+          <td>{{ team.yr }}</td>
         </tr>
-        {{% endfor %}}
+        {% endfor %}
     </table>
 </body>
 </html>
