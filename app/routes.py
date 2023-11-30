@@ -34,10 +34,10 @@ def login():
             flash('Invalid username or password')
             return redirect(url_for('login'))
         login_user(user, remember=form.remember_me.data)
-        next_page = request.args.get('next')
-        if not next_page or url_parse(next_page).netloc != '':
-            next_page = url_for('index')
-        return redirect(next_page)
+        # next_page = request.args.get('next')
+        # if not next_page or url_parse(next_page).netloc != '':
+        #     next_page = url_for('index')
+        return redirect('request')
     return render_template('login.html', title='Sign In', form=form)
 
 
@@ -62,30 +62,31 @@ def register():
     return render_template('register.html', title='Register', form=form)
 
 
-@app.route('/request', methods=['GET'])
+@app.route('/request', methods=['GET', 'POST'])
 def request():
     form = RequestForm()
     if form.is_submitted():
-        '''TODO: route to team.html with the given team name and year'''
+        data = request.json()
+        return redirect(url_for(f'team/{data["teamName"]}/{data["year"]}'))
     return render_template('request.html', title='Request Data', form=form)
 
 
-@app.route('/team', methods=['GET'])
+@app.route('/team/<teamName>/<year>', methods=['GET'])
 def team(teamName, year):
     teamId = db.session.execute(
         db.select(Teams.c.teamId).where(Teams.c.teamName == teamName & Teams.c.yr == year)
     )
     rank = db.session.execute(db.select(Teams.c.rank).where(Teams.c.teamId == teamId))
-    record = "TODO"
+    record = db.session.execute(db.select(Teams.c.wins / Teams.c.losses + Teams.c.wins).where(Teams.c.teamId == teamId))
     manNames = db.session.execute(
-        db.select(People.c.nameFirst + ' ' + People.c.nameLast)
+        db.select(People.c.nameFirst + ' ' + People.c.nameLast, People.c.personId)
         .join_from(People, Managers)
         .where(Managers.c.teamId == teamId)
     )
     return render_template('team.html', title=teamName)
 
 
-@app.route('/manager', methods=['GET'])
+@app.route('/manager/<manId>', methods=['GET'])
 def manager(manId):
     manName = db.session.execute(
         db.select(People.c.nameFirst + ' ' + People.c.nameLast)
@@ -97,4 +98,4 @@ def manager(manId):
         .join_from(Managers, Teams)
         .where(Managers.c.personId == manId)
     )
-    return render_template('team.html', title=manName)
+    return render_template('manager.html', title=manName)
