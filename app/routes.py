@@ -46,6 +46,7 @@ def register():
     if form.validate_on_submit():
         user = User(username=form.username.data)
         user.set_password(form.password.data)
+        user.is_admin = False
         db.session.add(user)
         db.session.commit()
         flash('Congratulations, you are now a registered user!')
@@ -54,7 +55,16 @@ def register():
 
 
 @app.route('/request', methods=['GET', 'POST'])
+@login_required
 def request():
+    user = db.session.query(User).filter_by(
+        username=current_user.username,
+        is_admin=True
+    ).first()
+
+    if user is not None:
+        print('this is an admin!!!!')
+
     leagueIds = db.session.query(Teams.leagueId).distinct()
     teamNames = db.session.query(Teams.teamName).order_by(Teams.teamName.asc()).distinct()
 
