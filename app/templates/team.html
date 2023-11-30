@@ -1,37 +1,34 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>{{ name }}</title>
-</head>
-<body>
-    <a href="{{ url_for('request') }}">Home</a>
+{% extends "base.html" %}
+
+{% block content %}
     {% if name %}
-    <h1>{{ name }}</h1>
+        <h1 style='text-align:center'>{{ name }}</h1>
     {% else %}
-    <h1>NAME</h1>
+        <h1 style='text-align:center'>NAME</h1>
     {% endif %}
     {% if year %}
-    <h2>{{ year }}</h2>
+        <h2 style='text-align:center'>{{ year }}</h2>
     {% else %}
-    <h2>YEAR</h2>
+        <h2 style='text-align:center'>YEAR</h2>
     {% endif %}
     {% if rank %}
-    <h4>{{ rank }}</h4>
+        <h4>Rank</h4>
+        <p>{{ rank }}</p>
     {% else %}
-    <h4>RANK</h4>
+        <h4>RANK</h4>
     {% endif %}
     {% if record %}
-    <h4>{{ record }}</h4>
+        <h4>Record</h4>
+        <p>{{ record }}</p>
     {% else %}
-    <h4>RECORD</h4>
+        <h4>RECORD</h4>
     {% endif %}
     {% if managers %}
-    <ul>
-        {% for manager in managers %}
-        <li><a href="/manager/{{ manager.personId }}">{{manager.firstName + ' ' + manager.lastName}}</a></li>
-        {% endfor %}
-    </ul>
+        <h4>Managers</h4>
+        <ul>
+            {% for manager in managers %}
+                <li><a href="/manager/{{ manager.personId }}">{{manager.firstName + ' ' + manager.lastName}}</a></li>
+            {% endfor %}
+        </ul>
     {% endif %}
-</body>
-</html>
+{% endblock %}

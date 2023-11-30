@@ -1,5 +1,12 @@
 {% extends "base.html" %}
 
 {% block content %}
-    <h1>Hi, {{ current_user.username }}!</h1>
+    {% if current_user.is_anonymous %}
+        <h1 style="text-align: center">{{ current_user.username }}!</h1>
+        <h4>Number of Requests</h4>
+        <p>{{ count }}</p>
+    {% else %}
+        <h1 style="text-align: center">Welcome</h1>
+        <p>Please sign in or create a new account to access baseball data.</p>
+    {% endif %}
 {% endblock %}

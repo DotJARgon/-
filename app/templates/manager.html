@@ -1,12 +1,7 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>{{ name }}</title>
-</head>
-<body>
+{% extends "base.html" %}
+
+{% block content %}
     <h1>{{ name }}</h1>
-    <a href="{{ url_for('request') }}">Home</a>
     <table>
         <tr>
           <th>Team</th>
@@ -19,5 +14,4 @@
         </tr>
         {% endfor %}
     </table>
-</body>
-</html>
+{% endblock %}

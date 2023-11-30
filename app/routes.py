@@ -10,17 +10,8 @@ from app.models import User, Managers, Teams, People
 @app.route('/index')
 @login_required
 def index():
-    posts = [
-        {
-            'author': {'username': 'John'},
-            'body': 'Beautiful day in Portland!'
-        },
-        {
-            'author': {'username': 'Susan'},
-            'body': 'The Avengers movie was so cool!'
-        }
-    ]
-    return render_template('index.html', title='Home', posts=posts)
+    count = db.session.query(User.count).filter_by(username=current_user.username).first()
+    return render_template('index.html', count=count)
 
 
 @app.route('/login', methods=['GET', 'POST'])
@@ -37,7 +28,7 @@ def login():
         # next_page = request.args.get('next')
         # if not next_page or url_parse(next_page).netloc != '':
         #     next_page = url_for('index')
-        return redirect('request')
+        return redirect('index')
     return render_template('login.html', title='Sign In', form=form)
 
 
