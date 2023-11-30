@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>{{ teamName }}</title>
+    <title>hi?</title>
 </head>
 <body>
     <a href="{{ url_for('request') }}">Home</a>
@@ -15,8 +15,8 @@
     {% endif %}
     {% if managers %}
     <ul>
-        {% for manager in {manNames} %}
-        <li><a href="{{ url_for('manager', data['personId']) }}">{{ data[' }}</a></li>
+        {% for manager in managers %}
+        <li><a href="{{ url_for('manager', data['personId']) }}">{{manager.personId}}</a></li>
         {% endfor %}
     </ul>
     {% endif %}

@@ -9,21 +9,21 @@
         {{ form.hidden_tag() }}
         <p>
             {{ form.leagueId.label }}<br>
-            {{ form.leagueId(size=32) }}<br>
+            {{ form.leagueId(size=5) }}<br>
             {% for error in form.leagueId.errors %}
             <span style="color: red;">[{{ error }}]</span>
             {% endfor %}
         </p>
         <p>
             {{ form.teamName.label }}<br>
-            {{ form.teamName(size=32) }}<br>
+            {{ form.teamName(size=5) }}<br>
             {% for error in form.teamName.errors %}
             <span style="color: red;">[{{ error }}]</span>
             {% endfor %}
         </p>
         <p>
             {{ form.year.label }}<br>
-            {{ form.year(size=32) }}<br>
+            {{ form.year(size=5) }}<br>
             {% for error in form.year.errors %}
             <span style="color: red;">[{{ error }}]</span>
             {% endfor %}

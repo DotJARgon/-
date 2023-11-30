@@ -1,5 +1,5 @@
 from flask_wtf import FlaskForm
-from wtforms import StringField, PasswordField, BooleanField, SubmitField, SelectField
+from wtforms import StringField, PasswordField, BooleanField, SubmitField, SelectField, IntegerField
 from wtforms.validators import ValidationError, DataRequired, Email, EqualTo
 from app.models import User, Teams
 from app import db
@@ -31,6 +31,10 @@ class RegistrationForm(FlaskForm):
 
 
 class RequestForm(FlaskForm):
+    leagueId = SelectField('League', choices=["fucker"])
+    teamName = SelectField('Team Name', choices=["fucker"])
+    # year = SelectField('Year', choices=["fucker"])
+    year = IntegerField('Year')
     # leagueId = SelectField('League', choices=Teams.query.first())
     """leagueId = SelectField('League', choices=db.session.execute(
         db.select(Teams.c.leagueId)
