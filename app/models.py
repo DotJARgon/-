@@ -82,8 +82,8 @@ class Teams(db.Model):
     teamNick = db.Column(db.String(32))
     teamName = db.Column(db.String(50))
     divId = db.Column(db.Enum(Division))
-    # leagueId = db.Column(db.ForeignKey('leagues.leagueId'))
-    leagueId = db.Column(db.String(32))
+    leagueId = db.Column(db.ForeignKey('leagues.leagueId'))
+    # leagueId = db.Column(db.String(32))
     franchiseId = db.Column(db.ForeignKey('franchises.franchiseId'))
     unique = db.UniqueConstraint(yr, teamNick, leagueId)
 
