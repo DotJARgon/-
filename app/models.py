@@ -425,11 +425,22 @@ class Salaries(db.Model):
 class Awards(db.Model):
     id = db.Column(db.Integer(), primary_key=True, autoincrement=True)
     awardName = db.Column(db.String(255))
-    personId = db.Column(db.ForeignKey('people.personId'))
+    personId = db.Column(db.ForeignKey('people.personId')) #TODO: check if playerID would be ok for the NAME of this variable
     yr = db.Column(db.Integer())
-    leagueId = db.Column(db.String(255)) #to do fix me plz
+    leagueId = db.Column(db.String(255)) #FIXME to do fix me plz
     tie = db.Column(db.Boolean())
     notes = db.Column(db.String(255))
+    unique = db.UniqueConstraint(yr, personId, awardName)
+
+class SharedAwards(db.Model):
+    id = db.Column(db.Integer(), primary_key=True, autoincrement=True)
+    awardName = db.Column(db.String(255))
+    personId = db.Column(db.ForeignKey('people.personId'))  # TODO: check if playerID would be ok for the NAME of this variable
+    yr = db.Column(db.Integer())
+    leagueId = db.Column(db.String(255))  # FIXME to do fix me plz
+    pWon = db.Column(db.Integer())
+    pMax = db.Column(db.Integer())
+    votes = db.Column(db.Integer())
     unique = db.UniqueConstraint(yr, personId, awardName)
 
 

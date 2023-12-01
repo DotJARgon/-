@@ -64,26 +64,46 @@ def register():
 
 @app.route('/request', methods=['GET', 'POST'])
 def request():
+    leagueIds = db.session.query(Teams.leagueId).distinct()
+    teamNames = db.session.query(Teams.teamName).order_by(Teams.teamName.asc()).distinct()
+
     form = RequestForm()
+    form.leagueId.choices = [l[0] for l in leagueIds]
+    form.teamName.choices = [t[0] for t in teamNames]
     if form.is_submitted():
-        data = request.json()
-        return redirect(url_for(f'team/{data["teamName"]}/{data["year"]}'))
+        res = db.session.query(Teams.teamId).filter_by(
+            teamName=form.teamName.data,
+            leagueId=form.leagueId.data,
+            yr=form.year.data
+        ).first()
+        if res is not None:
+        # print(form.leagueId.data, form.teamName.data, form.year.data)
+            return redirect(f'team/{res[0]}')
     return render_template('request.html', title='Request Data', form=form)
 
 
-@app.route('/team/<teamName>/<year>', methods=['GET'])
-def team(teamName, year):
-    teamId = db.session.execute(
-        db.select(Teams.c.teamId).where(Teams.c.teamName == teamName & Teams.c.yr == year)
-    )
-    rank = db.session.execute(db.select(Teams.c.rank).where(Teams.c.teamId == teamId))
-    record = db.session.execute(db.select(Teams.c.wins / Teams.c.losses + Teams.c.wins).where(Teams.c.teamId == teamId))
-    manNames = db.session.execute(
-        db.select(People.c.nameFirst + ' ' + People.c.nameLast, People.c.personId)
-        .join_from(People, Managers)
-        .where(Managers.c.teamId == teamId)
-    )
-    return render_template('team.html', title=teamName)
+@app.route('/team/<teamId>', methods=['GET'])
+def team(teamId):
+    t = db.session.query(Teams).filter_by(
+        teamId=teamId
+    ).first()
+    if t is not None:
+        managers = db.session.query(Managers).filter_by(
+            teamId=teamId
+        ).all()
+        print(managers)
+        return render_template('team.html', title=t.teamName, managers=managers, teamName=t.teamName)
+    # teamId = db.session.execute(
+    #     db.select(Teams.c.teamId).where(Teams.c.teamName == teamName & Teams.c.yr == year)
+    # )
+    # rank = db.session.execute(db.select(Teams.c.rank).where(Teams.c.teamId == teamId))
+    # record = db.session.execute(db.select(Teams.c.wins / Teams.c.losses + Teams.c.wins).where(Teams.c.teamId == teamId))
+    # manNames = db.session.execute(
+    #     db.select(People.c.nameFirst + ' ' + People.c.nameLast, People.c.personId)
+    #     .join_from(People, Managers)
+    #     .where(Managers.c.teamId == teamId)
+    # )
+    return render_template('team.html', title=teamId, manNames=[], teamName='fuckoff')
 
 
 @app.route('/manager/<manId>', methods=['GET'])

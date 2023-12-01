@@ -22,7 +22,7 @@ def create_awards(line, session):
 
     awards = Awards(
         personId=line['playerID'],
-        award=line['awardId'],
+        awardName=line['awardId'],
         yr=line['yearID'],
         leagueId=line['lgId'],
         tie=line['tie'],
