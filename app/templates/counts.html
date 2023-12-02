@@ -1,10 +1,22 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Title</title>
-</head>
-<body>
-    <!-- Table with usernames in one column and count in the other-->
-</body>
-</html>
+{% extends "base.html" %}
+
+{% block content %}
+    {% if current_user.is_admin %}
+        <h1 style="text-align: center">Counts</h1>
+        <table>
+            <tr>
+              <th>User</th>
+              <th>Requests</th>
+            </tr>
+            {% for u in counts %}
+                <tr>
+                  <td>{{ u.username }}</td>
+                  <td>{{ u.count }}</td>
+                </tr>
+            {% endfor %}
+        </table>
+    {% else %}
+        <h1 style="text-align: center">Error</h1>
+        <p>You do not have permission to view this information</p>
+    {% endif %}
+{% endblock %}

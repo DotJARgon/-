@@ -16,15 +16,43 @@ def process_line(line):
     return new_line
 
 # Everything below needs to be changed for awards
-def create_awards(line, session):
-        #I need to come back here and figure out how we are going to sort this stuff
-        # playerID,awardID,yearID,lgID,tie,notes
-
+def create_awards_manager(line, session):
+    leagueId = None
+    manager = session.query(Managers).filter_by(
+        personId=line['playerID'],
+        yr=line['yearID']
+    ).first()
+    if manager is not None:
+        team = session.query(Teams).filter_by(
+            teamId=manager.teamId
+        ).first()
+        leagueId = team.leagueId
     awards = Awards(
         personId=line['playerID'],
         awardName=line['awardID'],
         yr=line['yearID'],
-        leagueId=line['lgID'],
+        leagueId=leagueId,
+        tie=line['tie'],
+        notes=line['notes']
+    )
+    return awards
+
+def create_awards_player(line, session):
+    leagueId = None
+    player = session.query(Appearances).filter_by(
+        personId=line['playerID'],
+        yr=line['yearID']
+    ).first()
+    if player is not None:
+        team = session.query(Teams).filter_by(
+            teamId=player.teamId
+        ).first()
+        leagueId = team.leagueId
+    awards = Awards(
+        personId=line['playerID'],
+        awardName=line['awardID'],
+        yr=line['yearID'],
+        leagueId=leagueId,
         tie=line['tie'],
         notes=line['notes']
     )
@@ -46,13 +74,12 @@ def init_awards(session):
         i = 0
         for l in csvFile:
             line = process_line(l)
-            print(line)
-            awards = create_awards(line, session)
+            # print(line)
+            awards = create_awards_manager(line, session)
             if awards is not None:
                 session.add(awards)
             else:
                 print(f"Failed on {line['playerID']}, {line['awardID']},{line['lgID']}, {line['yearID']}")
-
             # if i > 1000:
             #     break
             # i+=1
@@ -62,14 +89,13 @@ def init_awards(session):
         i = 0
         for l in csvFile:
             line = process_line(l)
-            print(line)
-            awards = create_awards(line, session)
+            # print(line)
+            awards = create_awards_player(line, session)
             if awards is not None:
                 session.add(awards)
             else:
                 print(f"Failed on {line['playerID']}, {line['awardID']},{line['lgID']}, {line['yearID']}")
-
+    session.commit()
             # if i > 1000:
             #     break
             # i += 1
-    session.commit()

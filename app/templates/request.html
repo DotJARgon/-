@@ -1,34 +1,31 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Enter a Request</title>
-</head>
-<body>
+{% extends "base.html" %}
+
+{% block content %}
+    <h1 style='text-align:center'>Request</h1>
+    <p style='text-align:center'>Choose a league and a team name and enter a year to see data about that team.</p>
     <form action="" method="post" novalidate>
         {{ form.hidden_tag() }}
-        <p>
+        <p style='text-align:center'>
             {{ form.leagueId.label }}<br>
             {{ form.leagueId(size=5) }}<br>
             {% for error in form.leagueId.errors %}
             <span style="color: red;">[{{ error }}]</span>
             {% endfor %}
         </p>
-        <p>
+        <p style='text-align:center'>
             {{ form.teamName.label }}<br>
             {{ form.teamName(size=5) }}<br>
             {% for error in form.teamName.errors %}
             <span style="color: red;">[{{ error }}]</span>
             {% endfor %}
         </p>
-        <p>
+        <p style='text-align:center'>
             {{ form.year.label }}<br>
             {{ form.year(size=5) }}<br>
             {% for error in form.year.errors %}
             <span style="color: red;">[{{ error }}]</span>
             {% endfor %}
         </p>
-        <p>{{ form.submit() }}</p>
+        <p style='text-align:center'>{{ form.submit() }}</p>
     </form>
-</body>
-</html>
+{% endblock %}

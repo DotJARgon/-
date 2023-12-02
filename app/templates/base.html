@@ -1,32 +1,31 @@
 <!doctype html>
-<html>
+<html lang="en">
     <head>
-        {% if title %}
-        <title>{{ title }} - Microblog</title>
-        {% else %}
-        <title>Welcome to Microblog</title>
-        {% endif %}
+        <link rel= "stylesheet" type= "text/css" href= "{{ url_for('static',filename='styles/base.css') }}">
+        <title>Baseball</title>
     </head>
     <body>
-        <div>
-            Microblog:
-            <a href="{{ url_for('index') }}">Home</a>
-            {% if current_user.is_anonymous %}
-            <a href="{{ url_for('login') }}">Login</a>
-            {% else %}
-            <a href="{{ url_for('logout') }}">Logout</a>
-            {% endif %}
+        <div id="all">
+            <div id="sidebar">
+                <a href="{{ url_for('index') }}">Home</a>
+                <hr>
+                {% if current_user.is_admin %}
+                    <a href="{{ url_for('counts') }}">Counts</a>
+                    <hr>
+                {% endif %}
+                {% if current_user.is_anonymous %}
+                    <a href="{{ url_for('login') }}">Login</a>
+                    <hr>
+                    <a href="{{ url_for('register') }}">Register</a>
+                {% else %}
+                    <a href="{{ url_for('request') }}">Request</a>
+                    <hr>
+                    <a href="{{ url_for('logout') }}">Logout</a>
+                {% endif %}
+            </div>
+            <div id="content">
+                {% block content %}{% endblock %}
+            </div>
         </div>
-        <hr>
-        {% with messages = get_flashed_messages() %}
-        {% if messages %}
-        <ul>
-            {% for message in messages %}
-            <li>{{ message }}</li>
-            {% endfor %}
-        </ul>
-        {% endif %}
-        {% endwith %}
-        {% block content %}{% endblock %}
     </body>
 </html>

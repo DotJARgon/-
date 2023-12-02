@@ -18560,6 +18560,7 @@ thomawa01,1884,4,28,USA,PA,Altoona,1950,6,6,USA,PA,Altoona,Walt,Thomas,William W
 thomeji01,1970,8,27,USA,IL,Peoria,,,,,,,Jim,Thome,James Howard,250,76,L,R,1991-09-04,2012-10-03,thomj002,thomeji01
 thompaa01,1987,2,28,USA,NM,Santa Fe,,,,,,,Aaron,Thompson,Aaron Marshall,205,75,L,L,2011-08-24,2015-07-05,thoma003,thompaa01
 thompam99,1846,11,9,USA,IL,Seward,1895,2,17,USA,IL,Petatonica,Andrew,Thompson,Andrew M.,,,,,,,thoma801,thompam99
+playerID,birthYear,birthMonth,birthDay,birthCountry,birthState,birthCity,deathYear,deathMonth,deathDay,deathCountry,deathState,deathCity,nameFirst,nameLast,nameGiven,weight,height,bats,throws,debut,finalGame,retroID,bbrefID
 thompan02,1975,10,8,USA,WI,Oconomowoc,,,,,,,Andy,Thompson,Andrew John,210,75,R,R,2000-05-02,2000-05-04,thoma002,thompan02
 thompbo01,1953,11,3,USA,NC,Charlotte,2011,4,25,USA,NC,Charlotte,Bobby,Thompson,Bobby LaRue,175,71,B,R,1978-04-16,1978-09-25,thomb106,thompbo01
 thompbr01,1982,1,31,USA,NV,Las Vegas,,,,,,,Brad,Thompson,Bradley Joseph,190,73,R,R,2005-05-08,2010-06-02,thomb002,thompbr01

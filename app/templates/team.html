@@ -1,24 +1,42 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>hi?</title>
-</head>
-<body>
-    <a href="{{ url_for('request') }}">Home</a>
-    <h2>{{ year }}</h2>
+{% extends "base.html" %}
+
+{% block content %}
+    {% if name %}
+        <h1 style='text-align:center'>{{ name }}</h1>
+    {% else %}
+        <h1 style='text-align:center'>NAME</h1>
+    {% endif %}
+    {% if year %}
+        <h2 style='text-align:center'>{{ year }}</h2>
+    {% else %}
+        <h2 style='text-align:center'>YEAR</h2>
+    {% endif %}
     {% if rank %}
-    <h4>{{ rank }}</h4>
+        <h4>Rank</h4>
+        <p>{{ rank }}</p>
+    {% else %}
+        <h4>RANK</h4>
     {% endif %}
     {% if record %}
-    <h4>{{ record }}</h4>
+        <h4>Record</h4>
+        <p>{{ record }}</p>
+    {% else %}
+        <h4>RECORD</h4>
     {% endif %}
     {% if managers %}
-    <ul>
-        {% for manager in managers %}
-        <li><a href="">{{manager.personId}}</a></li>
-        {% endfor %}
-    </ul>
+        <h4>Managers</h4>
+        <ul>
+            {% for manager in managers %}
+                <li><a href="/manager/{{ manager.personId }}">{{manager.firstName + ' ' + manager.lastName}}</a></li>
+            {% endfor %}
+        </ul>
     {% endif %}
-</body>
-</html>
+    {% if players %}
+        <h4>Players</h4>
+        <ul>
+            {% for player in players %}
+                <li><a href="/player/{{ player.personId }}">{{player.firstName + ' ' + player.lastName}}</a></li>
+            {% endfor %}
+        </ul>
+    {% endif %}
+{% endblock %}

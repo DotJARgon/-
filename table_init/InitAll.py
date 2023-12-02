@@ -25,16 +25,20 @@ from FieldingOFsplitInit import init_fieldOFsplit
 from FieldingOFInit import init_fieldingOF
 from AwardsInit import init_awards
 from AwardsShareInit import init_awards_share
+from LeaguesInit import init_league
+
 uri = f"mysql+pymysql://{mysql['user']}:{mysql['password']}@{mysql['location']}/{mysql['database']}"
 engine = sqlalchemy.create_engine(uri)
 session = scoped_session(sessionmaker(autocommit=False,
                                       autoflush=False,
                                       bind=engine))
-init_parks(session)
-init_franchises(session)
-init_schools(session)
-init_people(session)
-init_teams(session)
+
+# init_league(session)
+# init_parks(session)
+# init_franchises(session)
+# init_schools(session)
+# init_people(session)
+# init_teams(session)
 # init_pitching(session)
 # init_pitching_post(session)
 # init_batting(session)
@@ -50,6 +54,6 @@ init_teams(session)
 # init_hallOfFame(session)
 # init_fieldOFsplit(session)
 # init_fieldingOF(session)
-init_awards(session)
+# init_awards(session)
 init_awards_share(session)
 session.close()
