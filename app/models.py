@@ -81,8 +81,8 @@ class Teams(db.Model):
     teamNick = db.Column(db.String(32))
     teamName = db.Column(db.String(50))
     divId = db.Column(db.Enum(Division))
-    # leagueId = db.Column(db.ForeignKey('leagues.leagueId'))
-    leagueId = db.Column(db.String(32))
+    leagueId = db.Column(db.ForeignKey('leagues.leagueId'))
+    # leagueId = db.Column(db.String(32))
     franchiseId = db.Column(db.ForeignKey('franchises.franchiseId'))
     unique = db.UniqueConstraint(yr, teamNick, leagueId)
 
@@ -427,21 +427,19 @@ class Awards(db.Model):
     awardName = db.Column(db.String(255))
     personId = db.Column(db.ForeignKey('people.personId')) #TODO: check if playerID would be ok for the NAME of this variable
     yr = db.Column(db.Integer())
-    leagueId = db.Column(db.String(255)) #FIXME to do fix me plz
-    tie = db.Column(db.Boolean())
+    leagueId = db.Column(db.ForeignKey('leagues.leagueId')) #FIXME to do fix me plz
+    tie = db.Column(db.Enum(YNChoice))
     notes = db.Column(db.String(255))
-    unique = db.UniqueConstraint(yr, personId, awardName)
 
 class SharedAwards(db.Model):
     id = db.Column(db.Integer(), primary_key=True, autoincrement=True)
     awardName = db.Column(db.String(255))
     personId = db.Column(db.ForeignKey('people.personId'))  # TODO: check if playerID would be ok for the NAME of this variable
     yr = db.Column(db.Integer())
-    leagueId = db.Column(db.String(255))  # FIXME to do fix me plz
+    leagueId = db.Column(db.ForeignKey('leagues.leagueId'))  # FIXME to do fix me plz
     pWon = db.Column(db.Integer())
     pMax = db.Column(db.Integer())
     votes = db.Column(db.Integer())
-    unique = db.UniqueConstraint(yr, personId, awardName)
 
 
 class HallOfFame(db.Model):

@@ -22,9 +22,9 @@ def create_awards(line, session):
 
     awards = Awards(
         personId=line['playerID'],
-        awardName=line['awardId'],
+        awardName=line['awardID'],
         yr=line['yearID'],
-        leagueId=line['lgId'],
+        leagueId=line['lgID'],
         tie=line['tie'],
         notes=line['notes']
     )
@@ -46,30 +46,30 @@ def init_awards(session):
         i = 0
         for l in csvFile:
             line = process_line(l)
-            # print(line)
+            print(line)
             awards = create_awards(line, session)
             if awards is not None:
                 session.add(awards)
             else:
                 print(f"Failed on {line['playerID']}, {line['awardID']},{line['lgID']}, {line['yearID']}")
 
-            if i > 1000:
-                break
-            i+=1
+            # if i > 1000:
+            #     break
+            # i+=1
 
     with open('../lahman/AwardsPlayers.csv', mode='r') as file:
         csvFile = csv.DictReader(file)
         i = 0
         for l in csvFile:
             line = process_line(l)
-            # print(line)
+            print(line)
             awards = create_awards(line, session)
             if awards is not None:
                 session.add(awards)
             else:
                 print(f"Failed on {line['playerID']}, {line['awardID']},{line['lgID']}, {line['yearID']}")
 
-            if i > 1000:
-                break
-            i += 1
+            # if i > 1000:
+            #     break
+            # i += 1
     session.commit()

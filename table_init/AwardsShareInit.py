@@ -21,7 +21,7 @@ def create_awards(line, session):
 
     sharedawards = SharedAwards(
         personId=line['playerID'],
-        awardName=line['awardId'],
+        awardName=line['awardID'],
         yr=line['yearID'],
         pWon=line['pointsWon'],
         pMax=line['pointsMax'],
@@ -29,14 +29,14 @@ def create_awards(line, session):
     )
     return sharedawards
 
-def init_awards(session):
+def init_awards_share(session):
 
     try:
-        session.query(Awards).delete()
+        session.query(SharedAwards).delete()
         session.commit()
-        print('Cleared Awards!')
+        print('Cleared Shared Awards!')
     except:
-        print('Failed to clear Awards!')
+        print('Failed to clear Shared Awards!')
         session.rollback()
         return
 
