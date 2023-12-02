@@ -3,15 +3,14 @@ from flask_login import login_user, logout_user, current_user, login_required
 from werkzeug.urls import url_parse
 from app import app, db
 from app.forms import LoginForm, RegistrationForm, RequestForm
-from app.models import User, Managers, Teams, People
+from app.models import User, Managers, Teams, People, Appearances
 
 
 @app.route('/')
 @app.route('/index')
 @login_required
 def index():
-    count = db.session.query(User.count).filter_by(username=current_user.username).first()
-    return render_template('index.html', count=count)
+    return render_template('index.html')
 
 
 @app.route('/login', methods=['GET', 'POST'])
@@ -78,7 +77,8 @@ def request():
             yr=form.year.data
         ).first()
         if res is not None:
-        # print(form.leagueId.data, form.teamName.data, form.year.data)
+            current_user.count += 1
+            db.session.commit()
             return redirect(f'team/{res[0]}')
     return render_template('request.html', title='Request Data', form=form)
 
@@ -90,12 +90,17 @@ def team(teamId):
     ).first()
     if t is not None:
         managers = (db.session.query(People.firstName, People.lastName, People.personId)
-                   .filter(Managers.teamId == teamId)
-                   .filter(People.personId == Managers.personId
-                   ).all())
+                    .filter(Managers.teamId == teamId)
+                    .filter(People.personId == Managers.personId)
+                    .all())
+        players = (db.session.query(People.firstName, People.lastName, People.personId)
+                   .filter(Appearances.teamId == teamId)
+                   .filter(People.personId == Appearances.personId)
+                   .all())
         return render_template('team.html',
             title=t.teamName,
             managers=managers,
+            players=players,
             name=t.teamName,
             rank=t.rank,
             record=(t.wins/(t.wins+t.losses)),
@@ -107,5 +112,20 @@ def team(teamId):
 @app.route('/manager/<manId>', methods=['GET'])
 def manager(manId):
     manName = db.session.query(People.firstName, People.lastName).filter_by(personId=manId).first()
-    teams = db.session.query(Teams.teamName, Teams.yr).filter(Teams.teamId == Managers.teamId).filter(Managers.personId == manId).all()
+    teams = (db.session.query(Teams.teamName, Teams.yr)
+             .filter(Teams.teamId == Managers.teamId)
+             .filter(Managers.personId == manId).all())
     return render_template('manager.html', name=(manName.firstName + ' ' + manName.lastName), teams=teams)
+@app.route('/player/<playerId>', methods=['GET'])
+def player(playerId):
+    playerName = db.session.query(People.firstName, People.lastName).filter_by(personId=playerId).first()
+    teams = (db.session.query(Teams.teamName, Teams.yr)
+             .filter(Teams.teamId == Appearances.teamId)
+             .filter(Appearances.personId == playerId).all())
+    return render_template('player.html', name=(playerName.firstName + ' ' + playerName.lastName), teams=teams)
+
+
+@app.route('/counts', methods=['GET'])
+def counts():
+    counts = db.session.query(User.username, User.count).all()
+    return render_template('counts.html', counts=counts)

@@ -31,4 +31,12 @@
             {% endfor %}
         </ul>
     {% endif %}
+    {% if players %}
+        <h4>Players</h4>
+        <ul>
+            {% for player in players %}
+                <li><a href="/player/{{ player.personId }}">{{player.firstName + ' ' + player.lastName}}</a></li>
+            {% endfor %}
+        </ul>
+    {% endif %}
 {% endblock %}

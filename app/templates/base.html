@@ -7,6 +7,10 @@
         <div>
             <a href="{{ url_for('index') }}">Home</a>
             <hr>
+            {% if current_user.is_admin %}
+                <a href="{{ url_for('counts') }}">Counts</a>
+                <hr>
+            {% endif %}
             {% if current_user.is_anonymous %}
                 <a href="{{ url_for('login') }}">Login</a>
                 <hr>
