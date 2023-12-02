@@ -1,0 +1,56 @@
+firstName,lastName,teamName,awardName,yr,leagueId,tie,notes
+Shohei,Ohtani,Los Angeles Angels,Most Valuable Player,2023,AL,N,
+Ronald,Acuna Jr.,Atlanta Braves,Most Valuable Player,2023,NL,N,
+Gerrit,Cole,New York Yankees,Cy Young,2023,AL,N,
+Blake,Snell,San Diego Padres,Cy Young,2023,NL,N,
+Gunnar,Henderson,Baltimore Orioles,Rookie of the Year,2023,AL,N,
+Corbin,Carroll,Arizona Diamondbacks,Rookie of the Year,2023,NL,N,
+Brandon,Hyde,Baltimore Orioles,Manager of the Year,2023,AL,N,
+Skip,Schumaker,Miami Marlins,Manager of the Year,2023,NL,N,
+Nathaniel,Lowe,Texas Rangers,Gold Glove,2023,AL,N,1B
+Andres,Gimenez,Cleveland Guardians,Gold Glove,2023,AL,N,2B
+Matt,Chapman,Toronto Blue Jays,Gold Glove,2023,AL,N,3B
+Jonah,Heim,Texas Rangers,Gold Glove,2023,AL,N,C
+Kevin,Kiermaier,Toronto Blue Jays,Gold Glove,2023,AL,N,CF
+Steven,Kwan,Cleveland Guardians,Gold Glove,2023,AL,N,LF
+Adolis,Garcia,Texas Rangers,Gold Glove,2023,AL,N,RF
+Jose,Berrios,Toronto Blue Jays,Gold Glove,2023,AL,N,SP
+Anthony,Volpe,New York Yankees,Gold Glove,2023,AL,N,SS
+Mauricio,Dubon,Houston Astros,Gold Glove,2023,AL,N,UT
+Christian,Walker,Arizona Diamondbacks,Gold Glove,2023,NL,N,1B
+Nico,Hoerner,Chicago Cubs,Gold Glove,2023,NL,N,2B
+Ke'Bryan,Hayes,Pittsburgh Pirates,Gold Glove,2023,NL,N,3B
+Gabriel,Moreno,Arizona Diamondbacks,Gold Glove,2023,NL,N,C
+Brenton,Doyle,Colorado Rockies,Gold Glove,2023,NL,N,CF
+Ian,Happ,Chicago Cubs,Gold Glove,2023,NL,N,LF
+Fernando,Tatis Jr.,San Diego Padres,Gold Glove,2023,NL,N,RF
+Zack,Wheeler,Philadelphia Phillies,Gold Glove,2023,NL,N,SP
+Dansby,Swanson,Chicago Cubs,Gold Glove,2023,NL,N,SS
+Ha-Seong,Kim,San Diego Padres,Gold Glove,2023,NL,N,UT
+Yandy,Diaz,Tampa Bay Rays,Silver Slugger,2023,AL,N,1B
+Marcus,Semien,Texas Rangers,Silver Slugger,2023,AL,N,2B
+Rafael,Devers,Boston Red Sox,Silver Slugger,2023,AL,N,3B
+Adley,Rutschman,Baltimore Orioles,Silver Slugger,2023,AL,N,C
+Luis,Robert Jr.,Chicago White Sox,Silver Slugger,2023,AL,Y,CF
+Julio,Rodriguez,Seattle Mariners,Silver Slugger,2023,AL,Y,CF
+Shohei,Ohtani,Los Angeles Angels,Silver Slugger,2023,AL,N,DH
+Kyle,Tucker,Houston Astros,Silver Slugger,2023,AL,N,RF
+Corey,Seager,Texas Rangers,Silver Slugger,2023,AL,N,SS
+Gunnar,Henderson,Baltimore Orioles,Silver Slugger,2023,AL,N,UT
+Matt,Olson,Atlanta Braves,Silver Slugger,2023,NL,N,1B
+Luis,Arraez,Miami Marlins,Silver Slugger,2023,NL,N,2B
+Austin,Riley,Atlanta Braves,Silver Slugger,2023,NL,N,3B
+William,Contreras,Milwaukee Brewers,Silver Slugger,2023,NL,N,C
+Bryce,Harper,Philadelphia Phillies,Silver Slugger,2023,NL,N,DH
+Juan,Soto,San Diego Padres,Silver Slugger,2023,NL,N,LF
+Mookie,Betts,Los Angeles Dodgers,Silver Slugger,2023,NL,Y,RF
+Ronald,Acuna Jr.,Atlanta Braves,Silver Slugger,2023,NL,Y,RF
+Francisco,Lindor,New York Mets,Silver Slugger,2023,NL,N,SS
+Cody,Bellinger,Chicago Cubs,Silver Slugger,2023,NL,N,UT
+Adolis,Garcia,Texas Rangers,ALCS MVP,2023,AL,N,
+Ketel,Marte,Arizona Diamondbacks,NLCS MVP,2023,NL,N,
+Corey,Seager,Texas Rangers,World Series MVP,2023,ML,N,
+Aaron,Judge,New York Yankees,Roberto Clemente Award,2023,ML,N,
+Felix,Bautista,Baltimore Orioles,Relief Man Award,2023,AL,N,
+Devin,Williams,Milwaukee Brewers,Relief Man Award,2023,NL,N,
+Elias,Diaz,Colorado Rockies,All-Star Game MVP,2023,ML,N,

@@ -13,7 +13,7 @@ def check_none(v):
 def process_line(line):
     new_line = {k: check_none(v) for k, v in line.items()}
     return new_line
-def create_series_post(line, session):
+def create_series_post(line):
     series = SeriesPost(
         yr=line['yearID'],
         round=line['round'],
@@ -43,7 +43,7 @@ def init_series_post(session):
         i = 0
         for l in csvFile:
             line = process_line(l)
-            series = create_series_post(line, session)
+            series = create_series_post(line)
             session.add(series)
             # if i > 100:
             #     break
