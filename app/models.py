@@ -135,6 +135,20 @@ class Teams(db.Model):
     pitcherParkFactor = db.Column(db.Integer())
 
 
+class TeamsHalf(db.Model):
+    teamId = db.Column(db.ForeignKey('teams.teamId'), primary_key=True)
+    yr = db.Column(db.Integer(), primary_key=True)
+    leagueId = db.Column(db.ForeignKey('leagues.leagueId'), primary_key=True)
+    half = db.Column(db.Integer(), primary_key=True)
+    divId = db.Column(db.Enum(Division))
+    divWon = db.Column(db.Enum(YNChoice))
+    rank = db.Column(db.Integer())
+    gamesPlayed = db.Column(db.Integer())
+    wins = db.Column(db.Integer())
+    losses = db.Column(db.Integer())
+
+
+
 class Appearances(db.Model):
     personId = db.Column(db.ForeignKey('people.personId'), primary_key=True)
     teamId = db.Column(db.ForeignKey('teams.teamId'), primary_key=True)
@@ -441,6 +455,30 @@ class SharedAwards(db.Model):
     pWon = db.Column(db.Integer())
     pMax = db.Column(db.Integer())
     votes = db.Column(db.Integer())
+
+
+class AwardsShare(db.Model):
+    id = db.Column(db.Integer(), primary_key=True, autoincrement=True)
+    awardName = db.Column(db.String(255))
+    personId = db.Column(db.ForeignKey('people.personId'))
+    yr = db.Column(db.Integer())
+    teamId = db.Column(db.ForeignKey('teams.teamId'))
+    pointsWon = db.Column(db.Integer())
+    pointsMax = db.Column(db.Integer())
+    votesFirst = db.Column(db.Integer())
+    unique = db.UniqueConstraint(yr, personId, awardName)
+
+class SeriesPost(db.Model):
+    id = db.Column(db.Integer(), primary_key=True, autoincrement=True)
+    yr = db.Column(db.Integer())
+    round = db.Column(db.String(32))
+    teamIdWinner = db.Column(db.ForeignKey('teams.teamId'))
+    teamIdLoser = db.Column(db.ForeignKey('teams.teamId'))
+    leagueIdWinner = db.Column(db.ForeignKey('leagues.leagueId'))
+    leagueIdLoser = db.Column(db.ForeignKey('leagues.leagueId'))
+    wins = db.Column(db.Integer())
+    losses = db.Column(db.Integer())
+    ties = db.Column(db.Integer())
 
 
 class HallOfFame(db.Model):
