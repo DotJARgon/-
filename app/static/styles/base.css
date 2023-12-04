@@ -1,0 +1,13 @@
+#content, #sidebar {float:left; display:inline;}
+
+#sidebar {
+    /*display: flex;*/
+    width: 15%;
+    /*background-color: #ffab2d;*/
+    /*margin: auto;*/
+    /*align-items: stretch;*/
+}
+#content {
+    /*padding-left: 30px;*/
+    width: 85%;
+}

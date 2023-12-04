@@ -44,9 +44,9 @@ def load_user(id):
 class User(UserMixin, db.Model):
     id = db.Column(db.Integer, primary_key=True)
     username = db.Column(db.String(64), index=True, unique=True)
-    password_hash = db.Column(db.String(128))
-    count = db.Column(db.Integer())
-    is_admin = db.Column(db.Boolean())
+    password_hash = db.Column(db.String(128), nullable=False)
+    count = db.Column(db.Integer(), default=0, nullable=False)
+    is_admin = db.Column(db.Boolean(), default=False, nullable=False)
 
     def __repr__(self):
         return self.username
@@ -84,8 +84,8 @@ class Teams(db.Model):
     teamNick = db.Column(db.String(32))
     teamName = db.Column(db.String(50))
     divId = db.Column(db.Enum(Division))
-    # leagueId = db.Column(db.ForeignKey('leagues.leagueId'))
-    leagueId = db.Column(db.String(32))
+    leagueId = db.Column(db.ForeignKey('leagues.leagueId'))
+    # leagueId = db.Column(db.String(32))
     franchiseId = db.Column(db.ForeignKey('franchises.franchiseId'))
     unique = db.UniqueConstraint(yr, teamNick, leagueId)
 
@@ -135,6 +135,20 @@ class Teams(db.Model):
 
     batterParkFactor = db.Column(db.Integer())
     pitcherParkFactor = db.Column(db.Integer())
+
+
+class TeamsHalf(db.Model):
+    teamId = db.Column(db.ForeignKey('teams.teamId'), primary_key=True)
+    yr = db.Column(db.Integer(), primary_key=True)
+    leagueId = db.Column(db.ForeignKey('leagues.leagueId'), primary_key=True)
+    half = db.Column(db.Integer(), primary_key=True)
+    divId = db.Column(db.Enum(Division))
+    divWon = db.Column(db.Enum(YNChoice))
+    rank = db.Column(db.Integer())
+    gamesPlayed = db.Column(db.Integer())
+    wins = db.Column(db.Integer())
+    losses = db.Column(db.Integer())
+
 
 
 class Appearances(db.Model):
@@ -428,12 +442,45 @@ class Salaries(db.Model):
 class Awards(db.Model):
     id = db.Column(db.Integer(), primary_key=True, autoincrement=True)
     awardName = db.Column(db.String(255))
+    personId = db.Column(db.ForeignKey('people.personId')) #TODO: check if playerID would be ok for the NAME of this variable
+    yr = db.Column(db.Integer())
+    leagueId = db.Column(db.ForeignKey('leagues.leagueId')) #FIXME to do fix me plz
+    tie = db.Column(db.Enum(YNChoice))
+    notes = db.Column(db.String(255))
+
+class SharedAwards(db.Model):
+    id = db.Column(db.Integer(), primary_key=True, autoincrement=True)
+    awardName = db.Column(db.String(255))
+    personId = db.Column(db.ForeignKey('people.personId'))  # TODO: check if playerID would be ok for the NAME of this variable
+    yr = db.Column(db.Integer())
+    leagueId = db.Column(db.ForeignKey('leagues.leagueId'))  # FIXME to do fix me plz
+    pWon = db.Column(db.Integer())
+    pMax = db.Column(db.Integer())
+    votes = db.Column(db.Integer())
+
+
+class AwardsShare(db.Model):
+    id = db.Column(db.Integer(), primary_key=True, autoincrement=True)
+    awardName = db.Column(db.String(255))
     personId = db.Column(db.ForeignKey('people.personId'))
     yr = db.Column(db.Integer())
     teamId = db.Column(db.ForeignKey('teams.teamId'))
-    tie = db.Column(db.Boolean())
-    notes = db.Column(db.String(255))
+    pointsWon = db.Column(db.Integer())
+    pointsMax = db.Column(db.Integer())
+    votesFirst = db.Column(db.Integer())
     unique = db.UniqueConstraint(yr, personId, awardName)
+
+class SeriesPost(db.Model):
+    id = db.Column(db.Integer(), primary_key=True, autoincrement=True)
+    yr = db.Column(db.Integer())
+    round = db.Column(db.String(32))
+    teamIdWinner = db.Column(db.ForeignKey('teams.teamId'))
+    teamIdLoser = db.Column(db.ForeignKey('teams.teamId'))
+    leagueIdWinner = db.Column(db.ForeignKey('leagues.leagueId'))
+    leagueIdLoser = db.Column(db.ForeignKey('leagues.leagueId'))
+    wins = db.Column(db.Integer())
+    losses = db.Column(db.Integer())
+    ties = db.Column(db.Integer())
 
 
 class HallOfFame(db.Model):

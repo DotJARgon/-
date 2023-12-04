@@ -376,4 +376,4 @@ yearID,round,teamIDwinner,lgIDwinner,teamIDloser,lgIDloser,wins,losses,ties
 2022,NLDS1,PHI,NL,ATL,NL,3,1,0
 2022,NLDS2,SDN,NL,LAN,NL,3,1,0
 2022,NLCS,PHI,NL,SDN,NL,4,1,0
-2022,WS,HOU,NL,PHI,NL,4,2,0
+2022,WS,HOU,AL,PHI,NL,4,2,0
