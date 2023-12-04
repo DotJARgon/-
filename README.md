@@ -64,8 +64,19 @@ account.
 ## Start the !!! Server
 
 Make sure your python virtual environment is running, if it is not, make sure you are in
-the project directory, and refer to step 3. of the **Instructions** section. Now run 
-the following:
+the project directory, and refer to step 3. of the **Instructions** section
+1. **Creating the database**
+
+Log into your mariadb instance and run the following:
+```mysql
+create database `!!!`;
+```
+Outside of your mariadb instance in the commandline, run the following to import
+the database data:
+```commandline
+mysql -u root -p < path/to/!!!.sql
+```
+2. Now in the directory of the project, run the following:
 ```bash
 python -m flask run
 ```
