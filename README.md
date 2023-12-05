@@ -14,7 +14,7 @@ This virtual environment contains essential Python libraries and frameworks requ
 
 ```bash
 git clone https://github.com/DotJARgon/-.git
-cd '-'
+cd -
 ```
 
 2. **Create a Virtual Environment**
