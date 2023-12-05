@@ -17,7 +17,7 @@ def create_batting_post(line, session):
     teams = session.query(Teams).filter_by(teamNick=line['teamID'], yr=line['yearID']).all()
     # if line['playerID'] == 'brainas01':
     #     print(line['playerID'], line['yearID'], line['stint'])
-    batting = Batting(
+    batting = BattingPost(
         personId=line['playerID'],
         yr=line['yearID'],
         round=line['round'],
