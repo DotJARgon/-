@@ -76,11 +76,13 @@ password: csi3335rocks
 
 ## Start the !!! Backend!
 
-1. Now in the directory of the project, run the following:
+1. In the directory of the project, run the following:
 ```bash
 python -m flask run
 ```
-Now navigate to http://127.0.0.1:5000, the website should now be running!
+Note that the virtual environment must be active.
+
+2. Navigate to http://127.0.0.1:5000, the website should now be running!
 
 ## Deactivating the Virtual Environment
 
@@ -99,11 +101,11 @@ python -m create_admin.py
 ```
 You will be prompted to enter a username and password, and to repeat this password.
 If your repeated password does not match the first password entered, the program will
-terminate, rerun step 1. to create the admin account. If both passwords are typed in
-correctly, then you will be prompted to enter 'Y' to confirm, anything else with 
-terminate the program, rerun step 1. to create the admin account. After entering 'Y',
-an admin account will be created with the entered username and password. If you
-ever need to make a new admin account, then simply rerun this section, it will delete
+terminate. If this happens, redo step 1. If both passwords are typed in
+correctly, then you will be prompted to enter 'Y' to confirm. Anything else with 
+terminate the program and you will have to redo step 1 to create the admin account. 
+After entering 'Y',an admin account will be created with the entered username and password.
+If you ever need to make a new admin account, simply rerun this section. It will delete
 the previous admin and create a new one. Note that this will erase the previous admin's
 query count information, so make sure you are positive you wish to recreate the admin
 account. 
