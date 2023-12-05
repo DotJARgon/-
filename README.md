@@ -54,7 +54,7 @@ the project directory, and refer to step 3. of the **Instructions** section
 
 Log into your mariadb instance and run the following:
 ```mysql
-DROP DATABASE `!!!` IF EXISTS;
+DROP DATABASE IF EXISTS `!!!`;
 ```
 ```mysql
 CREATE DATABASE `!!!`;
