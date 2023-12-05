@@ -2,6 +2,7 @@
 
 This repository contains the necessary instructions to launch our team's website for the CSI 3335 2023 Final Project.
 These instructions assume that the database is already running and that the !!!.sql file has already been run.
+
 ## Description
 
 This virtual environment contains essential Python libraries and frameworks required for the project. The `requirements.txt` file lists all the dependencies.
@@ -17,6 +18,8 @@ cd '-'
 ```
 
 2. **Create a Virtual Environment**
+
+Make sure you are using python 3.11, 3.12 will not work
 
 **For Windows**
 ```bash
@@ -43,7 +46,51 @@ source venv/bin/activate
 pip install -r requirements.txt
 ```
 
-## Setup Admin Account
+## Start the !!! Server
+
+Make sure your python virtual environment is running, if it is not, make sure you are in
+the project directory, and refer to step 3. of the **Instructions** section
+1. **Creating the database**
+
+Log into your mariadb instance and run the following:
+```mysql
+DROP DATABASE `!!!` IF EXISTS;
+```
+```mysql
+CREATE DATABASE `!!!`;
+```
+2. Outside of your mariadb instance in the commandline, run the following to import
+the database data (make sure to enter your database password when prompted):
+```commandline
+mysql -u root -p !!! < path/to/!!!.sql
+```
+## Default Admin Account
+
+There is a default admin account already in the database that will have been loaded
+in, however, if this will be deployed, we highly recommend going to the **Setting up a New Admin Account**
+section. The user credentials are as follows.
+
+username: Admin
+
+password: csi3335rocks
+
+## Start the !!! Backend!
+
+1. Now in the directory of the project, run the following:
+```bash
+python -m flask run
+```
+Now navigate to http://127.0.0.1:5000, the website should now be running!
+
+## Deactivating the Virtual Environment
+
+Run the following to deactivate the virtual environment
+
+```bash
+deactivate
+```
+
+## Setting up a New Admin Account
 Make sure you are inside of the repository directory before following the instructions
 below
 1. **Create Admin**
@@ -60,32 +107,3 @@ ever need to make a new admin account, then simply rerun this section, it will d
 the previous admin and create a new one. Note that this will erase the previous admin's
 query count information, so make sure you are positive you wish to recreate the admin
 account. 
-
-## Start the !!! Server
-
-Make sure your python virtual environment is running, if it is not, make sure you are in
-the project directory, and refer to step 3. of the **Instructions** section
-1. **Creating the database**
-
-Log into your mariadb instance and run the following:
-```mysql
-create database `!!!`;
-```
-Outside of your mariadb instance in the commandline, run the following to import
-the database data:
-```commandline
-mysql -u root -p < path/to/!!!.sql
-```
-2. Now in the directory of the project, run the following:
-```bash
-python -m flask run
-```
-Now navigate to http://127.0.0.1:5000 , the website should now be running!
-
-## Deactivating the Virtual Environment
-
-Run the following to deactivate the virtual environment
-
-```bash
-deactivate
-```
